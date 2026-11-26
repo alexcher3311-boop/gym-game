@@ -65,10 +65,6 @@
         .cell-x5 { background: #9C27B0; color: #fff; } .cell-x50 { background: var(--gold); color: #000; }
         .roulette-pointer { position: absolute; top: 0; left: 50%; width: 4px; height: 100%; background: red; transform: translateX(-50%); z-index: 10; }
 
-        /* Учителя */
-        .progress-bar { width: 100%; height: 6px; background: #333; border-radius: 3px; margin-top: 5px; }
-        .progress-fill { height: 100%; background: var(--accent); border-radius: 3px; }
-
         /* Наказание (Палка) */
         .beat-area { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 250px; background: var(--panel); border-radius: 15px; position: relative; overflow: hidden; }
         .teacher-img { width: 100px; height: 100px; border-radius: 50%; object-fit: cover; border: 3px solid var(--danger); }
@@ -141,7 +137,7 @@
         let game = {
             money: 0, students: 5, currentTab: 'build',
             lastCollection: Date.now(), vapeEndTime: 0,
-            multiplier: 1.0, // Глобальный множитель (достижения, премиум)
+            multiplier: 1.0, 
             
             buildings: {
                 toilet: { lvl: 0, cost: 10000, inc: 500, name: 'Туалет' },
@@ -179,16 +175,49 @@
             }
         };
 
+        // --- СИСТЕМА СОХРАНЕНИЙ ---
+        function saveGame() {
+            // Сохраняем всё, кроме таймеров, которые сбрасываются при загрузке
+            localStorage.setItem('gymGameSave_v25', JSON.stringify(game));
+        }
+
+        function loadGame() {
+            let saved = localStorage.getItem('gymGameSave_v25');
+            if (saved) {
+                game = JSON.parse(saved);
+                // При загрузке обновляем время сбора, чтобы не начислить деньги за время, пока игра была закрыта
+                game.lastCollection = Date.now(); 
+                document.getElementById('screen-start').classList.remove('active');
+                document.getElementById('screen-game').classList.add('active');
+                switchTab(game.currentTab || 'build');
+                setInterval(updateUI, 1000);
+                return true; // Игра загружена
+            }
+            return false; // Новой игры нет
+        }
+
+        // Перехватываем закрытие приложения, чтобы сохранить прогресс
+        window.addEventListener('beforeunload', saveGame);
+
         function startGame() {
             game.money = 5000000;
             document.getElementById('screen-start').classList.remove('active');
             document.getElementById('screen-game').classList.add('active');
             switchTab('build');
             setInterval(updateUI, 1000);
+            saveGame(); // Сохраняем стартовые данные
         }
 
+        // Вызываем загрузку при старте
+        window.onload = () => {
+            if (!loadGame()) {
+                // Если сохранений нет, показываем стартовый экран
+                document.getElementById('screen-start').classList.add('active');
+            }
+        };
+
+        // --- ЛОГИКА ИГРЫ ---
         function updateUI() {
-            // Проверка вейпа
             let vapeMult = Date.now() < game.vapeEndTime ? 2 : 1;
             let totalInc = calculateIncome() * vapeMult;
             
@@ -197,8 +226,13 @@
             document.getElementById('ui-income').innerText = '+' + formatMoney(totalInc);
             document.getElementById('ui-pending').innerText = formatMoney(getPending());
 
-            if (game.currentTab === 'exc') renderExcursions(); // Обновляем таймеры
+            if (game.currentTab === 'exc') renderExcursions(); 
             if (game.currentTab === 'build' || game.currentTab === 'teach') updateButtons();
+            
+            // Автосохранение раз в 10 секунд
+            if (Math.floor(Date.now() / 1000) % 10 === 0) {
+                saveGame();
+            }
         }
 
         function calculateIncome() {
@@ -217,7 +251,12 @@
 
         function collectIncome() {
             let p = getPending();
-            if(p > 0) { game.money += p; game.lastCollection = Date.now(); showToast("Собрано: " + formatMoney(p)); }
+            if(p > 0) { 
+                game.money += p; 
+                game.lastCollection = Date.now(); 
+                showToast("Собрано: " + formatMoney(p)); 
+                saveGame(); // Сохраняем при сборе
+            }
         }
 
         function switchTab(tab) {
@@ -234,7 +273,7 @@
                     area.innerHTML += `<div class="item" id="item-${k}">
                         <div class="item-info"><span class="item-name">${b.name} (Ур.${b.lvl})</span>
                         <span class="item-income">+${formatMoney(b.inc)}/час</span></div>
-                        <button class="buy-btn" id="btn-${k}" onclick="buy('build', '${k}', ${cost})">${formatMoney(cost)} ₽</button>
+                        <button class="buy-btn" id="btn-${k}" onclick="buy('buildings', '${k}', ${cost})">${formatMoney(cost)} ₽</button>
                     </div>`;
                 }
             } else if (tab === 'teach') {
@@ -246,7 +285,7 @@
                         <img src="${t.img}" style="width:30px; height:30px; border-radius:50%; margin-right:10px;">
                         <div class="item-info"><span class="item-name">${t.name} (Ур.${t.lvl})</span>
                         <span class="item-income">+${formatMoney(t.inc)}/час</span></div>
-                        <button class="buy-btn" id="btn-${k}" onclick="buy('teach', '${k}', ${cost})">${formatMoney(cost)} ₽</button>
+                        <button class="buy-btn" id="btn-${k}" onclick="buy('teachers', '${k}', ${cost})">${formatMoney(cost)} ₽</button>
                     </div>`;
                 }
             } else if (tab === 'exc') {
@@ -308,43 +347,40 @@
             updateButtons();
         }
 
-        // Логика покупки
         function buy(type, key, cost) {
             if (game.money >= cost) {
                 game.money -= cost;
                 game[type][key].lvl++;
                 showToast("Куплено!");
-                if (type === 'teach') {
-                    // Открываем следующего учителя
+                if (type === 'teachers') {
                     let keys = Object.keys(game.teachers);
                     let idx = keys.indexOf(key);
                     if (idx + 1 < keys.length) game.teachers[keys[idx+1]].unlocked = true;
                 }
-                // Проверка ачивки
                 if (!game.achievements.firstUpgrade.done) {
                     game.achievements.firstUpgrade.done = true;
                     game.multiplier += 0.01;
                     showToast("🏆 Достижение: x1.01 к доходу!");
                 }
-                switchTab(game.currentTab); // Перерисовать
+                switchTab(game.currentTab); 
+                saveGame(); // СОХРАНЯЕМ ПОСЛЕ ПОКУПКИ
             }
         }
 
         function updateButtons() {
-            let type = game.currentTab === 'teach' ? 'teach' : 'build';
-            if (type === 'build' || type === 'teach') {
+            let type = game.currentTab === 'teach' ? 'teachers' : 'buildings';
+            if (game.currentTab === 'build' || game.currentTab === 'teach') {
                 for (let k in game[type]) {
                     let item = game[type][k];
                     let btn = document.getElementById('btn-' + k);
                     if (!btn) continue;
-                    let cost = Math.floor(item.cost * Math.pow(type==='build'?1.2:1.3, item.lvl));
+                    let cost = Math.floor(item.cost * Math.pow(type==='buildings'?1.2:1.3, item.lvl));
                     if (game.money >= cost) btn.classList.add('can-buy');
                     else btn.classList.remove('can-buy');
                 }
             }
         }
 
-        // Экскурсии
         function renderExcursions() {
             let area = document.getElementById('content-area');
             let html = '';
@@ -372,10 +408,10 @@
                 e.last = Date.now();
                 showToast("Экскурсия завершена! +" + formatMoney(e.reward));
                 renderExcursions();
+                saveGame();
             }
         }
 
-        // Вейп
         function playVape() {
             let flash = document.getElementById('flash-effect');
             flash.style.background = "white"; flash.style.opacity = '1';
@@ -386,12 +422,13 @@
                     game.vapeEndTime = Date.now() + 5*60*1000;
                     showToast("🚀 Успех! x2 доход на 5 минут.");
                 } else {
-                    let lose = calculateIncome(); // Доход за час
+                    let lose = calculateIncome(); 
                     game.money -= lose;
                     if(game.money < 0) game.money = 0;
                     showZloAnim();
                     showToast("💀 Провал! Зло забрал " + formatMoney(lose) + " ₽");
                 }
+                saveGame();
             }, 200);
         }
 
@@ -401,20 +438,17 @@
             setTimeout(() => z.classList.remove('show'), 1500);
         }
 
-        // Рулетка
         let rouletteCells = [];
         function initRoulette() {
             let strip = document.getElementById('roulette-strip');
             strip.innerHTML = '';
             rouletteCells = [];
-            // 60 делений: 30-x2, 20-x3, 9-x5, 1-x50
             for(let i=0; i<60; i++) {
                 if(i<30) rouletteCells.push({m:2, c:'cell-x2'});
                 else if(i<50) rouletteCells.push({m:3, c:'cell-x3'});
                 else if(i<59) rouletteCells.push({m:5, c:'cell-x5'});
                 else rouletteCells.push({m:50, c:'cell-x50'});
             }
-            // Перемешаем
             rouletteCells.sort(() => Math.random() - 0.5);
             
             rouletteCells.forEach(cell => {
@@ -430,20 +464,10 @@
 
             game.money -= bet;
             let strip = document.getElementById('roulette-strip');
-            
-            // Выбираем случайный выигрышный индекс
             let winIdx = Math.floor(Math.random() * 60);
             let winMultiplier = rouletteCells[winIdx].m;
-
-            // Анимация: прокрутка к нужному элементу
-            // 60 элементов по 40px = 2400px. 
-            // Нам нужно, чтобы winIdx оказался под указателем (по центру экрана).
-            // Центр экрана ~ 150px (половина ширины телефона).
-            // Смещение = (winIdx * 40) - (screenWidth/2) + 20;
-            
             let screenWidth = window.innerWidth;
-            let targetX = (winIdx * 40) - (screenWidth / 2) + 20 - (Math.random()*20 - 10); // Небольшой рандом
-            // Добавляем 3 полных оборота (3 * 2400px)
+            let targetX = (winIdx * 40) - (screenWidth / 2) + 20 - (Math.random()*20 - 10); 
             let totalX = targetX - (3 * 2400);
 
             strip.style.transform = `translateX(${totalX}px)`;
@@ -453,12 +477,11 @@
                 game.money += winAmount;
                 showToast(`Выпало x${winMultiplier}! Выигрыш: ${formatMoney(winAmount)} ₽`);
                 updateUI();
-                // Сброс ленты через 2 секунды
+                saveGame();
                 setTimeout(() => { strip.style.transition = 'none'; strip.style.transform = 'translateX(0px)'; setTimeout(()=>strip.style.transition = 'transform 3s cubic-bezier(0.1, 0.7, 0.1, 1)', 50); }, 2000);
             }, 3100);
         }
 
-        // Наказание
         function selectPunishTeacher() {
             let k = document.getElementById('teacher-select').value;
             if (!k) { document.getElementById('punish-img').style.display = 'none'; document.getElementById('stick').style.display = 'none'; return; }
@@ -472,13 +495,13 @@
             let img = document.getElementById('punish-img');
             if (img.style.display === 'none') return;
 
-            // Анимация палки
             stick.classList.add('hit');
             img.style.transform = "scale(0.9) rotate(5deg)";
             setTimeout(() => { stick.classList.remove('hit'); img.style.transform = "none"; }, 100);
 
             game.money += 100;
             showToast("+100 ₽");
+            saveGame(); // Сохраняем после каждого клика
         }
 
         function formatMoney(num) {

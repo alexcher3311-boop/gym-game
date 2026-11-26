@@ -151,29 +151,34 @@
             currentTab: 'build',
             vapeEndTime: 0,
             
+            // ПРОГРЕССИЯ ЗДАНИЙ: 
+            // Каждое следующее дороже в ~2.5 раза и приносит в ~2.5 раза больше.
             buildings: {
-                yard: { level: 0, baseCost: 10000, income: 1000, rating: 100, maxLevel: 20, emoji: '🌳', name: 'Двор' },
-                wardrobe: { level: 0, baseCost: 25000, income: 2500, rating: 50, maxLevel: 20, emoji: '🧥', name: 'Раздевалка' },
-                classes: { level: 0, baseCost: 50000, income: 5000, rating: 200, maxLevel: 20, emoji: '📚', name: 'Классы' },
-                heating: { level: 0, baseCost: 150000, income: 0, rating: 300, maxLevel: 10, emoji: '🔥', name: 'Отопление', students: 5 },
-                bus: { level: 0, baseCost: 300000, income: 20000, rating: 500, maxLevel: 10, emoji: '🚌', name: 'Автобус', students: 2 }
+                yard: { level: 0, baseCost: 50000, income: 3000, rating: 100, maxLevel: 20, emoji: '🌳', name: 'Двор' },
+                wardrobe: { level: 0, baseCost: 150000, income: 9000, rating: 200, maxLevel: 20, emoji: '🧥', name: 'Раздевалка' },
+                classes: { level: 0, baseCost: 500000, income: 30000, rating: 400, maxLevel: 20, emoji: '📚', name: 'Классы' },
+                heating: { level: 0, baseCost: 1500000, income: 0, rating: 800, maxLevel: 10, emoji: '🔥', name: 'Отопление', students: 5 },
+                bus: { level: 0, baseCost: 5000000, income: 300000, rating: 1500, maxLevel: 10, emoji: '🚌', name: 'Автобус', students: 2 }
             },
+            // ПРОГРЕССИЯ ЛЮДЕЙ
+            // То же самое: цена и доход растут синхронно.
             staff: {
-                pokost: { level: 0, baseCost: 5000, income: 500, rating: 20, maxLevel: 10, img: IMAGES.pokost, name: 'Покость' },
-                rybak: { level: 0, baseCost: 15000, income: 1500, rating: 50, maxLevel: 10, img: IMAGES.rybak, name: 'Рыбак' },
-                davydovna: { level: 0, baseCost: 40000, income: 4000, rating: 100, maxLevel: 10, img: IMAGES.davydovna, name: 'Давыдовна' },
-                lucky_rybak: { level: 0, baseCost: 100000, income: 10000, rating: 150, maxLevel: 10, img: IMAGES.lucky_rybak, name: 'Счастливый рыбак' },
-                andryukha: { level: 0, baseCost: 250000, income: 25000, rating: 250, maxLevel: 10, img: IMAGES.andryukha, name: 'Андрюха' },
-                informatik: { level: 0, baseCost: 500000, income: 50000, rating: 300, maxLevel: 10, img: IMAGES.informatik, name: 'Информатик' },
-                ryaboshapko: { level: 0, baseCost: 1000000, income: 100000, rating: 400, maxLevel: 10, img: IMAGES.ryaboshapko, name: 'Рябошапко' },
-                fizik: { level: 0, baseCost: 2000000, income: 200000, rating: 500, maxLevel: 10, img: IMAGES.fizik, name: 'Физик' },
-                zlo: { level: 0, baseCost: 5000000, income: 0, rating: 1000, maxLevel: 1, img: IMAGES.zlo, name: 'Зло' }
+                pokost: { level: 0, baseCost: 10000, income: 600, rating: 20, maxLevel: 10, img: IMAGES.pokost, name: 'Покость' },
+                rybak: { level: 0, baseCost: 30000, income: 2000, rating: 50, maxLevel: 10, img: IMAGES.rybak, name: 'Рыбак' },
+                davydovna: { level: 0, baseCost: 80000, income: 5000, rating: 100, maxLevel: 10, img: IMAGES.davydovna, name: 'Давыдовна' },
+                lucky_rybak: { level: 0, baseCost: 200000, income: 15000, rating: 200, maxLevel: 10, img: IMAGES.lucky_rybak, name: 'Счастливый рыбак' },
+                andryukha: { level: 0, baseCost: 500000, income: 40000, rating: 300, maxLevel: 10, img: IMAGES.andryukha, name: 'Андрюха' },
+                informatik: { level: 0, baseCost: 1200000, income: 100000, rating: 500, maxLevel: 10, img: IMAGES.informatik, name: 'Информатик' },
+                ryaboshapko: { level: 0, baseCost: 3000000, income: 250000, rating: 800, maxLevel: 10, img: IMAGES.ryaboshapko, name: 'Рябошапко' },
+                fizik: { level: 0, baseCost: 7000000, income: 600000, rating: 1200, maxLevel: 10, img: IMAGES.fizik, name: 'Физик' },
+                zlo: { level: 0, baseCost: 20000000, income: 0, rating: 2000, maxLevel: 1, img: IMAGES.zlo, name: 'Зло' }
             },
+            // ПРОГРЕССИЯ ЕДЫ
             food: {
-                hotdog: { level: 0, baseCost: 5000, income: 500, rating: 100, maxLevel: 5, emoji: '🌭', name: 'Сосиска' },
-                juice: { level: 0, baseCost: 15000, income: 1500, rating: 300, maxLevel: 5, emoji: '🧃', name: 'Сок' },
-                icecream: { level: 0, baseCost: 40000, income: 4000, rating: 500, maxLevel: 5, emoji: '🍦', name: 'Мороженое' },
-                pizza: { level: 0, baseCost: 100000, income: 10000, rating: 1000, maxLevel: 5, emoji: '🍕', name: 'Пицца' }
+                hotdog: { level: 0, baseCost: 20000, income: 1500, rating: 50, maxLevel: 5, emoji: '🌭', name: 'Сосиска' },
+                juice: { level: 0, baseCost: 60000, income: 5000, rating: 150, maxLevel: 5, emoji: '🧃', name: 'Сок' },
+                icecream: { level: 0, baseCost: 150000, income: 15000, rating: 300, maxLevel: 5, emoji: '🍦', name: 'Мороженое' },
+                pizza: { level: 0, baseCost: 400000, income: 50000, rating: 600, maxLevel: 5, emoji: '🍕', name: 'Пицца' }
             }
         };
 
@@ -202,6 +207,7 @@
             for (let key in game.buildings) total += game.buildings[key].level * game.buildings[key].income;
             for (let key in game.staff) total += game.staff[key].level * game.staff[key].income;
             for (let key in game.food) total += game.food[key].level * game.food[key].income;
+            // Каждый ученик дает +5% к базовому доходу
             let studentMultiplier = 1 + (game.students * 0.05);
             return Math.floor(total * studentMultiplier);
         }
@@ -214,8 +220,9 @@
             return total;
         }
 
+        // Формула роста цены за уровень
         function getCost(item) {
-            let multiplier = item.maxLevel === 20 ? 1.2 : (item.maxLevel === 10 ? 1.3 : 1.4);
+            let multiplier = item.maxLevel === 20 ? 1.15 : (item.maxLevel === 10 ? 1.25 : 1.35);
             return Math.floor(item.baseCost * Math.pow(multiplier, item.level));
         }
 
@@ -393,9 +400,9 @@
             setTimeout(() => toast.classList.remove('show'), 3000);
         }
 
-        function saveGame() { localStorage.setItem('gymGameSave_v22', JSON.stringify(game)); }
+        function saveGame() { localStorage.setItem('gymGameSave_v23', JSON.stringify(game)); }
         function loadGame() {
-            let saved = localStorage.getItem('gymGameSave_v22');
+            let saved = localStorage.getItem('gymGameSave_v23');
             if (saved) {
                 game = JSON.parse(saved);
                 game.lastCollection = Date.now(); 

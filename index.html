@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Гимназия Краснообская</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        :root {
+            --bg-color: #121214;
+            --panel-bg: #1e1e24;
+            --accent: #4CAF50;
+            --accent-pressed: #388e3c;
+            --gold: #FFD700;
+            --text-muted: #8e8e93;
+        }
+        body {
+            background-color: var(--bg-color); color: white; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            margin: 0; padding: 0; display: flex; flex-direction: column; height: 100vh; overflow: hidden;
+            user-select: none; /* Чтобы текст не выделялся при кликах */
+        }
+        .screen { display: none; flex-direction: column; height: 100%; padding: 15px; box-sizing: border-box; }
+        .active { display: flex; }
+        
+        /* Стартовый экран */
+        #start-screen { justify-content: center; align-items: center; text-align: center; background: url('https://www.transparenttextures.com/patterns/cubes.png'); background-color: #121214;}
+        .start-btn {
+            background: linear-gradient(135deg, var(--accent), #2E7D32); color: white; border: none;
+            padding: 20px 40px; font-size: 24px; border-radius: 15px; cursor: pointer;
+            box-shadow: 0 5px 15px rgba(76, 175, 80, 0.4); transition: transform 0.1s; margin-top: 20px; font-weight: bold;
+        }
+        .start-btn:active { transform: scale(0.95); }
+
+        /* Игровой экран */
+        .top-bar { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; background: var(--panel-bg); padding: 15px; border-radius: 15px; margin-bottom: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
+        .stat { text-align: center; }
+        .stat-val { font-size: 16px; font-weight: bold; color: var(--gold); white-space: nowrap;}
+        .stat-label { font-size: 11px; color: var(--text-muted); text-transform: uppercase; margin-top: 4px; }
+        .income-text { color: var(--accent); font-size: 12px; font-weight: bold; }
+
+        .school-view {
+            background: var(--panel-bg); border-radius: 15px; padding: 20px; text-align: center; margin-bottom: 15px;
+            border: 2px solid #333; box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
+        }
+        .school-emoji { font-size: 70px; filter: drop-shadow(0 0 10px rgba(255,255,255,0.2)); transition: transform 0.2s; }
+        .school-emoji:active { transform: scale(1.1); }
+        .status-badge { display: inline-block; background: #333; padding: 5px 15px; border-radius: 20px; font-size: 14px; margin-top: 10px; color: var(--gold); border: 1px solid var(--gold);}
+
+        .actions { display: flex; gap: 10px; margin-bottom: 15px; }
+        .action-btn {
+            flex: 1; background-color: #2c2c2e; color: white; border: none; padding: 15px; font-size: 16px;
+            border-radius: 12px; font-weight: bold; box-shadow: 0 4px #000; cursor: pointer; transition: 0.1s;
+            display: flex; flex-direction: column; align-items: center;
+        }
+        .action-btn:active { transform: translateY(4px); box-shadow: 0 0 #000; }
+        .action-btn small { font-size: 10px; color: var(--text-muted); margin-top: 5px; font-weight: normal;}
+        .action-btn.primary { background-color: #007AFF; box-shadow: 0 4px #0056b3; }
+        .action-btn.primary small { color: #e0e0e0; }
+
+        .shop-title { font-size: 14px; margin-bottom: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; display: flex; justify-content: space-between; }
+        .shop-list { overflow-y: auto; flex-grow: 1; padding-bottom: 20px; display: flex; flex-direction: column; gap: 10px;}
+        .shop-item {
+            background: var(--panel-bg); padding: 15px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center;
+            border-left: 4px solid #555; transition: border-color 0.3s;
+        }
+        .shop-item.affordable { border-left-color: var(--accent); }
+        .item-info { display: flex; flex-direction: column; flex: 1; }
+        .item-name { font-weight: bold; font-size: 15px; display: flex; align-items: center; gap: 5px;}
+        .item-desc { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+        .item-income { font-size: 12px; color: var(--accent); margin-top: 2px; }
+        .buy-btn {
+            background: #333; color: white; border: none; padding: 12px 15px;
+            border-radius: 8px; font-weight: bold; cursor: pointer; min-width: 100px; text-align: center;
+            transition: 0.2s; font-size: 14px;
+        }
+        .buy-btn.can-buy { background: var(--accent); box-shadow: 0 3px 0 var(--accent-pressed); }
+        .buy-btn.can-buy:active { transform: translateY(3px); box-shadow: none; }
+        .buy-btn:disabled { background: #333; color: #666; cursor: not-allowed; }
+
+        /* Уведомление */
+        #toast {
+            position: fixed; bottom: -50px; left: 50%; transform: translateX(-50%);
+            background: #333; color: white; padding: 10px 20px; border-radius: 20px; transition: bottom 0.3s;
+            font-weight: bold; z-index: 100; font-size: 14px; box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+            border: 1px solid var(--accent); white-space: nowrap;
+        }
+        #toast.show { bottom: 30px; }
+    </style>
+</head>
+<body>
+
+    <!-- ЭКРАН 1: ПОКУПКА -->
+    <div id="start-screen" class="screen active">
+        <h1>Гимназия<br>Краснообская</h1>
+        <p style="color: var(--text-muted); margin-bottom: 30px; font-size: 14px; max-width: 300px;">
+            Вам выделено <b>5 000 000 ₽</b> на восстановление школы.<br>Стоимость сделки: 1 ₽
+        </p>
+        <button class="start-btn" onclick="buySchool()">Вступить в должность</button>
+    </div>
+
+    <!-- ЭКРАН 2: ИГРА -->
+    <div id="game-screen" class="screen">
+        <div class="top-bar">
+            <div class="stat">
+                <div class="stat-val" id="money">0 ₽</div>
+                <div class="stat-label">Баланс</div>
+                <div class="income-text" id="income">+0 ₽/сек</div>
+            </div>
+            <div class="stat">
+                <div class="stat-val" id="date">День 1</div>
+                <div class="stat-label">Учебный год</div>
+            </div>
+            <div class="stat">
+                <div class="stat-val" id="rating">0</div>
+                <div class="stat-label">Рейтинг</div>
+            </div>
+        </div>
+
+        <div class="school-view">
+            <div class="school-emoji" id="school-emoji">🏚️</div>
+            <div class="status-badge" id="school-status">Сельская школа</div>
+        </div>
+
+        <div class="actions">
+            <button class="action-btn primary" onclick="collectDonations()">
+                💰 Спонсоры
+                <small>Быстрый доход</small>
+            </button>
+            <button class="action-btn" onclick="claimDailyBonus()" id="daily-btn">
+                🎁 Бонус дня
+                <small id="daily-status">Доступен</small>
+            </button>
+        </div>
+
+        <div class="shop-title">
+            <span>Развитие инфраструктуры</span>
+            <span id="next-status-req" style="color:var(--gold); font-size:12px;"></span>
+        </div>
+        
+        <div class="shop-list" id="shop-list">
+            <!-- Генерируется JS -->
+        </div>
+    </div>
+
+    <div id="toast">Уведомление</div>
+
+    <script>
+        let tg = window.Telegram.WebApp;
+        tg.expand();
+
+        // --- ИГРОВЫЕ ДАННЫЕ ---
+        let game = {
+            money: 0,
+            rating: 0,
+            day: 1,
+            lastTick: Date.now(),
+            lastDailyBonus: 0, // Timestamp последнего бонуса
+            isBought: false,
+            buildings: {
+                classes: { level: 0, baseCost: 500000, income: 10, rating: 50, maxLevel: 10, emoji: '📚', name: 'Ремонт классов' },
+                canteen: { level: 0, baseCost: 1500000, income: 50, rating: 150, maxLevel: 10, emoji: '🍲', name: 'Столовая тёти Вали' },
+                gym: { level: 0, baseCost: 4000000, income: 200, rating: 400, maxLevel: 10, emoji: '🏀', name: 'Спортзал' },
+                labs: { level: 0, baseCost: 10000000, income: 800, rating: 1000, maxLevel: 10, emoji: '🔬', name: 'Научные лаборатории' },
+                stadium: { level: 0, baseCost: 25000000, income: 3000, rating: 2500, maxLevel: 10, emoji: '🏟️', name: 'Стадион' }
+            }
+        };
+
+        // Статусы школы (зависят от рейтинга)
+        const statuses = [
+            { req: 0, name: 'Сельская школа', emoji: '🏚️' },
+            { req: 500, name: 'Идёт ремонт', emoji: '🚧' },
+            { req: 2000, name: 'Открытая школа', emoji: '🏫' },
+            { req: 5000, name: 'Хорошая школа', emoji: '🏢' },
+            { req: 10000, name: 'Лучшая в области', emoji: '🏰' },
+            { req: 25000, name: 'Лучшая в стране', emoji: '🏛️' },
+            { req: 50000, name: 'Гимназия будущего', emoji: '🚀' }
+        ];
+
+        // Загрузка сохранения
+        function loadGame() {
+            let saved = localStorage.getItem('gymGameSave');
+            if (saved) {
+                game = JSON.parse(saved);
+                document.getElementById('start-screen').classList.remove('active');
+                document.getElementById('game-screen').classList.add('active');
+                renderShop();
+                updateUI();
+                startLoop();
+            }
+        }
+
+        function saveGame() {
+            localStorage.setItem('gymGameSave', JSON.stringify(game));
+        }
+
+        // --- СТАРТ ИГРЫ ---
+        function buySchool() {
+            game.isBought = true;
+            game.money = 5000000;
+            document.getElementById('start-screen').classList.remove('active');
+            document.getElementById('game-screen').classList.add('active');
+            renderShop();
+            updateUI();
+            startLoop();
+            showToast("Вы купили школу! Сделайте из неё конфетку.");
+        }
+
+        // --- ОСНОВНОЙ ЦИКЛ (ТИКИ) ---
+        function startLoop() {
+            setInterval(() => {
+                let now = Date.now();
+                let deltaSeconds = (now - game.lastTick) / 1000;
+                game.lastTick = now;
+
+                // 1. Начисление пассивного дохода
+                let incomePerSecond = calculateIncome();
+                game.money += Math.floor(incomePerSecond * deltaSeconds);
+
+                // 2. Смена дня (1 день = 7 минут = 420 сек)
+                // Чтобы проверить смену дней, можете временно поменять 420 на 5
+                let dayDurationSec = 420; 
+                let daysPassed = Math.floor(deltaSeconds / dayDurationSec);
+                if (daysPassed > 0) {
+                    game.day += daysPassed;
+                    showToast("Наступил День " + game.day);
+                }
+
+                updateUI();
+                updateButtons();
+                saveGame();
+            }, 1000);
+        }
+
+        // Расчет дохода в секунду
+        function calculateIncome() {
+            let total = 0;
+            for (let key in game.buildings) {
+                total += game.buildings[key].level * game.buildings[key].income;
+            }
+            return total;
+        }
+
+        // Расчет общего рейтинга
+        function calculateRating() {
+            let total = 0;
+            for (let key in game.buildings) {
+                total += game.buildings[key].level * game.buildings[key].rating;
+            }
+            return total;
+        }
+
+        // Стоимость следующего уровня здания
+        function getCost(building) {
+            // Формула: Базовая цена * (1.5 в степени уровня)
+            return Math.floor(building.baseCost * Math.pow(1.6, building.level));
+        }
+
+        // --- ОТРИСОВКА ИНТЕРФЕЙСА ---
+        function updateUI() {
+            game.rating = calculateRating();
+            
+            // Деньги
+            document.getElementById('money').innerText = formatMoney(game.money);
+            document.getElementById('income').innerText = '+' + formatMoney(calculateIncome()) + '/сек';
+            
+            // День
+            document.getElementById('date').innerText = "День " + game.day;
+            
+            // Рейтинг
+            document.getElementById('rating').innerText = game.rating;
+
+            // Статус
+            let currentStatus = statuses[0];
+            let nextStatus = null;
+            for (let i = 0; i < statuses.length; i++) {
+                if (game.rating >= statuses[i].req) {
+                    currentStatus = statuses[i];
+                    nextStatus = statuses[i+1];
+                }
+            }
+            document.getElementById('school-emoji').innerText = currentStatus.emoji;
+            document.getElementById('school-status').innerText = currentStatus.name;
+            
+            let reqEl = document.getElementById('next-status-req');
+            if (nextStatus) {
+                reqEl.innerText = "До след. статуса: " + (nextStatus.req - game.rating) + " очков";
+            } else {
+                reqEl.innerText = "Максимальный статус!";
+            }
+
+            // Ежедневный бонус
+            let timeSinceBonus = Date.now() - game.lastDailyBonus;
+            let dailyBtn = document.getElementById('daily-btn');
+            let dailyStatus = document.getElementById('daily-status');
+            if (timeSinceBonus > 24 * 60 * 60 * 1000) { // 24 часа
+                dailyBtn.style.opacity = '1';
+                dailyStatus.innerText = "Доступен!";
+                dailyStatus.style.color = "var(--gold)";
+            } else {
+                dailyBtn.style.opacity = '0.5';
+                dailyStatus.innerText = "Ждите";
+                dailyStatus.style.color = "var(--text-muted)";
+            }
+        }
+
+        function renderShop() {
+            const list = document.getElementById('shop-list');
+            list.innerHTML = '';
+            
+            for (let key in game.buildings) {
+                let b = game.buildings[key];
+                let cost = getCost(b);
+                let isMax = b.level >= b.maxLevel;
+
+                let div = document.createElement('div');
+                div.className = 'shop-item';
+                div.id = 'item-' + key;
+                
+                div.innerHTML = `
+                    <div class="item-info">
+                        <span class="item-name">${b.emoji} ${b.name} <span style="color:var(--gold);font-size:12px;">(Ур. ${b.level}/${b.maxLevel})</span></span>
+                        <span class="item-desc">+${b.rating} к рейтингу</span>
+                        ${b.level > 0 ? `<span class="item-income">Приносит +${b.income * b.level} ₽/сек</span>` : ''}
+                    </div>
+                    <button class="buy-btn" id="btn-${key}" onclick="upgrade('${key}')">
+                        ${isMax ? 'МАКС' : formatMoney(cost) + ' ₽'}
+                    </button>
+                `;
+                list.appendChild(div);
+            }
+        }
+
+        // Обновление состояния кнопок (чтобы они загорались зеленым, если хватает денег)
+        function updateButtons() {
+            for (let key in game.buildings) {
+                let b = game.buildings[key];
+                let btn = document.getElementById('btn-' + key);
+                let itemDiv = document.getElementById('item-' + key);
+                let cost = getCost(b);
+                
+                if (b.level >= b.maxLevel) continue;
+
+                if (game.money >= cost) {
+                    btn.classList.add('can-buy');
+                    btn.disabled = false;
+                    itemDiv.classList.add('affordable');
+                } else {
+                    btn.classList.remove('can-buy');
+                    btn.disabled = true;
+                    itemDiv.classList.remove('affordable');
+                }
+            }
+        }
+
+        // --- ДЕЙСТВИЯ ---
+        function upgrade(key) {
+            let b = game.buildings[key];
+            let cost = getCost(b);
+            if (game.money >= cost && b.level < b.maxLevel) {
+                game.money -= cost;
+                b.level++;
+                showToast(b.name + " улучшено до Ур. " + b.level);
+                updateUI();
+                renderShop(); // Перерисовываем, чтобы обновить цену
+                updateButtons();
+                saveGame();
+            }
+        }
+
+        function collectDonations() {
+            // Бонус зависит от рейтинга. Чем круче школа, тем больше спонсоры дают.
+            let bonus = 10000 + (game.rating * 5); 
+            game.money += bonus;
+            showToast("💸 Спонсоры выделили: " + formatMoney(bonus) + " ₽");
+            updateUI();
+            updateButtons();
+            saveGame();
+        }
+
+        function claimDailyBonus() {
+            let timeSinceBonus = Date.now() - game.lastDailyBonus;
+            if (timeSinceBonus > 24 * 60 * 60 * 1000) {
+                // Бонус = доход за 15 минут
+                let bonus = calculateIncome() * 60 * 15;
+                if (bonus < 50000) bonus = 50000; // Минимальный бонус
+                
+                game.money += bonus;
+                game.lastDailyBonus = Date.now();
+                showToast("🎁 Получен бонус: " + formatMoney(bonus) + " ₽");
+                updateUI();
+                updateButtons();
+                saveGame();
+            } else {
+                showToast("Бонус будет доступен позже!");
+            }
+        }
+
+        // --- УТИЛИТЫ ---
+        function formatMoney(num) {
+            if (num >= 1000000000) return (num / 1000000000).toFixed(2) + ' млрд';
+            if (num >= 1000000) return (num / 1000000).toFixed(2) + ' млн';
+            if (num >= 1000) return (num / 1000).toFixed(1) + ' к';
+            return num + '';
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            toast.innerText = msg;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 2500);
+        }
+
+        // Запуск при загрузке
+        window.onload = () => {
+            loadGame();
+        };
+
+    </script>
+</body>
+</html>

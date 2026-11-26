@@ -11,75 +11,67 @@
             --text: #fff; --muted: #8e8e93; --vape: #9C27B0; --danger: #F44336;
         }
         body { background: var(--bg); color: var(--text); font-family: sans-serif; margin: 0; padding: 0; height: 100vh; display: flex; flex-direction: column; overflow: hidden; user-select: none; }
-        .screen { display: none; flex-direction: column; height: 100%; padding: 15px; box-sizing: border-box; }
+        .screen { display: none; flex-direction: column; height: 100%; padding: 10px; box-sizing: border-box; }
         .active { display: flex; }
 
-        /* Старт */
         #screen-start { justify-content: center; align-items: center; text-align: center; }
         .btn-main { background: linear-gradient(135deg, var(--accent), #2E7D32); color: white; border: none; padding: 15px 40px; font-size: 20px; border-radius: 15px; font-weight: bold; cursor: pointer; margin-top: 20px; }
 
-        /* Топ бар */
-        .top-bar { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; background: var(--panel); padding: 10px; border-radius: 15px; margin-bottom: 10px; }
+        .top-bar { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; background: var(--panel); padding: 10px; border-radius: 15px; margin-bottom: 8px; }
         .stat { text-align: center; }
-        .stat-val { font-size: 16px; font-weight: bold; color: var(--gold); }
-        .stat-label { font-size: 10px; color: var(--muted); text-transform: uppercase; }
+        .stat-val { font-size: 15px; font-weight: bold; color: var(--gold); }
+        .stat-label { font-size: 9px; color: var(--muted); text-transform: uppercase; }
         
-        /* Кнопка сбора */
-        .collect-btn { width: 100%; background: linear-gradient(90deg, #FF9800, #FF5722); color: white; border: none; padding: 12px; font-size: 16px; border-radius: 12px; font-weight: bold; margin-bottom: 10px; cursor: pointer; }
+        .collect-btn { width: 100%; background: linear-gradient(90deg, #FF9800, #FF5722); color: white; border: none; padding: 10px; font-size: 15px; border-radius: 12px; font-weight: bold; margin-bottom: 8px; cursor: pointer; }
 
-        /* Табы */
-        .tabs { display: flex; gap: 5px; margin-bottom: 10px; overflow-x: auto; padding-bottom: 5px;}
-        .tab-btn { flex: 1; background: #2c2c2e; color: var(--muted); border: none; padding: 8px 4px; border-radius: 8px; font-weight: bold; font-size: 10px; white-space: nowrap; }
+        .tabs { display: flex; gap: 5px; margin-bottom: 8px; overflow-x: auto; padding-bottom: 5px;}
+        .tab-btn { flex: 0 0 auto; background: #2c2c2e; color: var(--muted); border: none; padding: 8px 12px; border-radius: 8px; font-weight: bold; font-size: 10px; white-space: nowrap; }
         .tab-btn.active-tab { background: var(--panel); color: white; border-bottom: 2px solid var(--accent); }
 
         .content-area { overflow-y: auto; flex-grow: 1; padding-bottom: 20px; display: flex; flex-direction: column; gap: 8px;}
         
-        /* Элементы магазина */
         .item { background: var(--panel); padding: 10px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; border-left: 4px solid #555; }
         .item.can-buy { border-left-color: var(--accent); }
         .item-info { display: flex; flex-direction: column; flex: 1; }
-        .item-name { font-weight: bold; font-size: 13px; }
-        .item-desc { font-size: 11px; color: var(--muted); }
-        .item-income { font-size: 11px; color: var(--accent); font-weight: bold;}
-        .buy-btn { background: #333; color: white; border: none; padding: 8px; border-radius: 8px; font-weight: bold; font-size: 11px; min-width: 80px; }
+        .item-name { font-weight: bold; font-size: 12px; }
+        .item-desc { font-size: 10px; color: var(--muted); }
+        .item-income { font-size: 10px; color: var(--accent); font-weight: bold;}
+        .buy-btn { background: #333; color: white; border: none; padding: 6px 10px; border-radius: 8px; font-weight: bold; font-size: 11px; min-width: 70px; }
         .buy-btn.can-buy { background: var(--accent); }
         
-        /* Экскурсии */
-        .excursion-box { background: var(--panel); padding: 15px; border-radius: 12px; text-align: center; margin-bottom: 10px; }
-        .excursion-timer { font-size: 20px; font-weight: bold; color: var(--gold); margin: 10px 0; }
-        .excursion-btn { width: 100%; padding: 10px; border: none; border-radius: 8px; background: var(--accent); color: white; font-weight: bold; }
+        .excursion-box { background: var(--panel); padding: 10px; border-radius: 12px; text-align: center; margin-bottom: 8px; }
+        .excursion-timer { font-size: 16px; font-weight: bold; color: var(--gold); margin: 5px 0; }
+        .excursion-btn { width: 100%; padding: 8px; border: none; border-radius: 8px; background: var(--accent); color: white; font-weight: bold; font-size: 12px;}
         .excursion-btn:disabled { background: #555; }
 
-        /* Туалет */
-        .toilet-img { width: 100%; height: 140px; object-fit: cover; border-radius: 12px; margin-bottom: 10px; border: 2px solid #555; }
-        .mini-game-box { background: var(--panel); border: 1px solid #444; padding: 15px; border-radius: 12px; text-align: center; margin-bottom: 10px; }
-        .mini-game-title { color: var(--gold); font-size: 15px; font-weight: bold; margin-bottom: 5px; }
-        .mini-game-btn { background: var(--vape); color: white; border: none; padding: 10px; border-radius: 8px; font-weight: bold; width: 100%; margin-top: 5px; }
+        .toilet-img { width: 100%; height: 120px; object-fit: cover; border-radius: 12px; margin-bottom: 8px; border: 2px solid #555; }
+        .mini-game-box { background: var(--panel); border: 1px solid #444; padding: 10px; border-radius: 12px; text-align: center; margin-bottom: 8px; }
+        .mini-game-title { color: var(--gold); font-size: 13px; font-weight: bold; margin-bottom: 5px; }
+        .mini-game-btn { background: var(--vape); color: white; border: none; padding: 8px; border-radius: 8px; font-weight: bold; width: 100%; margin-top: 5px; font-size: 12px;}
         .mini-game-btn.danger { background: var(--danger); }
         
         /* Рулетка */
-        .roulette-container { width: 100%; height: 60px; background: #111; border-radius: 10px; overflow: hidden; position: relative; margin: 10px 0; border: 2px solid var(--gold); }
+        .roulette-container { width: 100%; height: 40px; background: #111; border-radius: 8px; overflow: hidden; position: relative; margin: 8px 0; border: 2px solid var(--gold); }
         .roulette-strip { display: flex; height: 100%; transition: transform 3s cubic-bezier(0.1, 0.7, 0.1, 1); }
-        .roulette-cell { width: 40px; min-width: 40px; height: 100%; display: flex; justify-content: center; align-items: center; font-size: 12px; font-weight: bold; border-right: 1px solid #333; }
-        .cell-x2 { background: #333; color: #fff; } .cell-x3 { background: #2196F3; color: #fff; }
-        .cell-x5 { background: #9C27B0; color: #fff; } .cell-x50 { background: var(--gold); color: #000; }
+        .roulette-cell { width: 40px; min-width: 40px; height: 100%; display: flex; justify-content: center; align-items: center; font-size: 11px; font-weight: bold; border-right: 1px solid #333; }
+        .cell-x2 { background: #333; } .cell-x3 { background: #2196F3; }
+        .cell-x5 { background: #9C27B0; } .cell-x50 { background: var(--gold); color: #000; }
         .roulette-pointer { position: absolute; top: 0; left: 50%; width: 4px; height: 100%; background: red; transform: translateX(-50%); z-index: 10; }
 
-        /* Наказание (Палка) */
-        .beat-area { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 250px; background: var(--panel); border-radius: 15px; position: relative; overflow: hidden; }
-        .teacher-img { width: 100px; height: 100px; border-radius: 50%; object-fit: cover; border: 3px solid var(--danger); }
-        .stick { width: 10px; height: 120px; background: #8B4513; position: absolute; top: 20px; right: 20px; transform-origin: bottom center; transition: transform 0.1s; display: none; border-radius: 5px;}
-        .stick.hit { transform: rotate(-45deg) translate(-30px, 30px); }
+        /* Наказание */
+        .beat-area { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 200px; background: var(--panel); border-radius: 15px; position: relative; overflow: hidden; margin-bottom: 8px;}
+        .teacher-img { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 3px solid var(--danger); }
+        .stick { width: 8px; height: 90px; background: #8B4513; position: absolute; top: 20px; right: 20px; transform-origin: bottom center; transition: transform 0.1s; display: none; border-radius: 4px;}
+        .stick.hit { transform: rotate(-45deg) translate(-20px, 20px); }
         
-        /* Достижения и Донат */
-        .achieve-item, .donate-item { background: var(--panel); padding: 12px; border-radius: 12px; margin-bottom: 8px; }
-        
-        #toast { position: fixed; bottom: -50px; left: 50%; transform: translateX(-50%); background: #333; color: white; padding: 10px 20px; border-radius: 20px; transition: bottom 0.3s; font-weight: bold; z-index: 100; font-size: 13px; border: 1px solid var(--accent); text-align:center;}
-        #toast.show { bottom: 30px; }
+        .achieve-item, .donate-item { background: var(--panel); padding: 10px; border-radius: 10px; margin-bottom: 6px; }
+        .donate-btn { background: var(--gold); color: black; border: none; padding: 6px; border-radius: 6px; font-weight: bold; font-size: 11px; margin-top: 5px; width: 100%;}
+
+        #toast { position: fixed; bottom: -50px; left: 50%; transform: translateX(-50%); background: #333; color: white; padding: 8px 16px; border-radius: 20px; transition: bottom 0.3s; font-weight: bold; z-index: 100; font-size: 12px; border: 1px solid var(--accent); text-align:center;}
+        #toast.show { bottom: 20px; }
         
         #flash-effect { position: fixed; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; pointer-events: none; z-index: 999; transition: opacity 0.2s; }
-        /* Анимация Зла */
-        .zlo-anim { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0); font-size: 100px; z-index: 1000; transition: transform 0.5s; }
+        .zlo-anim { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0); font-size: 80px; z-index: 1000; transition: transform 0.4s; }
         .zlo-anim.show { transform: translate(-50%, -50%) scale(1); }
     </style>
 </head>
@@ -87,16 +79,14 @@
     <div id="flash-effect"></div>
     <div id="zlo-anim" class="zlo-anim">😈</div>
 
-    <!-- Стартовый экран -->
     <div id="screen-start" class="screen active">
         <h1>Гимназия Краснообская</h1>
-        <img src="https://i.ibb.co/4RZrMzh9/IMG-1323.jpg" style="width: 200px; border-radius: 10px; filter: grayscale(100%); margin: 15px 0;">
+        <img src="https://i.ibb.co/4RZrMzh9/IMG-1323.jpg" style="width: 180px; border-radius: 10px; filter: grayscale(100%); margin: 10px 0;">
         <h3>Купить за 1 ₽?</h3>
         <button class="btn-main" onclick="startGame()">ДА</button>
-        <p style="margin-top: 30px; color: var(--gold);">+5 000 000 ₽<br>+5 учеников</p>
+        <p style="margin-top: 20px; color: var(--gold); font-size: 14px;">+5 000 000 ₽<br>+5 учеников</p>
     </div>
 
-    <!-- Главный экран -->
     <div id="screen-game" class="screen">
         <div class="top-bar">
             <div class="stat"><div class="stat-val" id="ui-money">0 ₽</div><div class="stat-label">Баланс</div></div>
@@ -108,9 +98,10 @@
 
         <div class="tabs">
             <button class="tab-btn active-tab" id="tab-build" onclick="switchTab('build')">🏗 Стройка</button>
+            <button class="tab-btn" id="tab-staff" onclick="switchTab('staff')">👨‍🏫 Люди</button>
+            <button class="tab-btn" id="tab-food" onclick="switchTab('food')">🍕 Еда</button>
             <button class="tab-btn" id="tab-exc" onclick="switchTab('exc')">🚌 Экскурсии</button>
             <button class="tab-btn" id="tab-task" onclick="switchTab('task')">📋 Задания</button>
-            <button class="tab-btn" id="tab-teach" onclick="switchTab('teach')">👨‍🏫 Учителя</button>
             <button class="tab-btn" id="tab-toilet" onclick="switchTab('toilet')">🚽 Туалет</button>
             <button class="tab-btn" id="tab-punish" onclick="switchTab('punish')">🏏 Наказать</button>
             <button class="tab-btn" id="tab-donate" onclick="switchTab('donate')">💎 Донат</button>
@@ -137,7 +128,7 @@
         let game = {
             money: 0, students: 5, currentTab: 'build',
             lastCollection: Date.now(), vapeEndTime: 0,
-            multiplier: 1.0, 
+            multiplier: 1.0,
             
             buildings: {
                 toilet: { lvl: 0, cost: 10000, inc: 500, name: 'Туалет' },
@@ -152,7 +143,7 @@
                 library: { lvl: 0, cost: 10000000, inc: 500000, name: 'Библиотека' },
                 labs: { lvl: 0, cost: 25000000, inc: 1500000, name: 'Лаборатория' }
             },
-            teachers: {
+            staff: {
                 pokost: { lvl: 0, cost: 5000, inc: 500, name: 'Покость', img: IMAGES.pokost, unlocked: true },
                 rybak: { lvl: 0, cost: 15000, inc: 1500, name: 'Рыбак', img: IMAGES.rybak, unlocked: true },
                 davydovna: { lvl: 0, cost: 40000, inc: 4000, name: 'Давыдовна', img: IMAGES.davydovna, unlocked: true },
@@ -162,6 +153,12 @@
                 ryaboshapko: { lvl: 0, cost: 1000000, inc: 100000, name: 'Рябошапко', img: IMAGES.ryaboshapko, unlocked: false },
                 fizik: { lvl: 0, cost: 2000000, inc: 200000, name: 'Физик', img: IMAGES.fizik, unlocked: false },
                 zlo: { lvl: 0, cost: 5000000, inc: 0, name: 'Зло', img: IMAGES.zlo, unlocked: false }
+            },
+            food: {
+                hotdog: { lvl: 0, cost: 20000, inc: 1500, name: 'Сосиска' },
+                juice: { lvl: 0, cost: 60000, inc: 5000, name: 'Сок' },
+                icecream: { lvl: 0, cost: 150000, inc: 15000, name: 'Мороженое' },
+                pizza: { lvl: 0, cost: 400000, inc: 50000, name: 'Пицца' }
             },
             excursions: {
                 museum: { name: 'Музей', time: 2*60*60*1000, reward: 1000000, last: 0 },
@@ -175,28 +172,20 @@
             }
         };
 
-        // --- СИСТЕМА СОХРАНЕНИЙ ---
-        function saveGame() {
-            // Сохраняем всё, кроме таймеров, которые сбрасываются при загрузке
-            localStorage.setItem('gymGameSave_v25', JSON.stringify(game));
-        }
-
+        function saveGame() { localStorage.setItem('gymGameSave_v27', JSON.stringify(game)); }
         function loadGame() {
-            let saved = localStorage.getItem('gymGameSave_v25');
+            let saved = localStorage.getItem('gymGameSave_v27');
             if (saved) {
                 game = JSON.parse(saved);
-                // При загрузке обновляем время сбора, чтобы не начислить деньги за время, пока игра была закрыта
                 game.lastCollection = Date.now(); 
                 document.getElementById('screen-start').classList.remove('active');
                 document.getElementById('screen-game').classList.add('active');
                 switchTab(game.currentTab || 'build');
                 setInterval(updateUI, 1000);
-                return true; // Игра загружена
+                return true;
             }
-            return false; // Новой игры нет
+            return false;
         }
-
-        // Перехватываем закрытие приложения, чтобы сохранить прогресс
         window.addEventListener('beforeunload', saveGame);
 
         function startGame() {
@@ -205,42 +194,30 @@
             document.getElementById('screen-game').classList.add('active');
             switchTab('build');
             setInterval(updateUI, 1000);
-            saveGame(); // Сохраняем стартовые данные
+            saveGame();
         }
 
-        // Вызываем загрузку при старте
-        window.onload = () => {
-            if (!loadGame()) {
-                // Если сохранений нет, показываем стартовый экран
-                document.getElementById('screen-start').classList.add('active');
-            }
-        };
+        window.onload = () => { if (!loadGame()) document.getElementById('screen-start').classList.add('active'); };
 
-        // --- ЛОГИКА ИГРЫ ---
         function updateUI() {
             let vapeMult = Date.now() < game.vapeEndTime ? 2 : 1;
             let totalInc = calculateIncome() * vapeMult;
-            
             document.getElementById('ui-money').innerText = formatMoney(game.money);
             document.getElementById('ui-students').innerText = game.students;
             document.getElementById('ui-income').innerText = '+' + formatMoney(totalInc);
             document.getElementById('ui-pending').innerText = formatMoney(getPending());
 
             if (game.currentTab === 'exc') renderExcursions(); 
-            if (game.currentTab === 'build' || game.currentTab === 'teach') updateButtons();
-            
-            // Автосохранение раз в 10 секунд
-            if (Math.floor(Date.now() / 1000) % 10 === 0) {
-                saveGame();
-            }
+            if (game.currentTab === 'build' || game.currentTab === 'staff' || game.currentTab === 'food') updateButtons();
+            if (Math.floor(Date.now() / 1000) % 10 === 0) saveGame();
         }
 
         function calculateIncome() {
             let base = 0;
             for (let k in game.buildings) base += game.buildings[k].lvl * game.buildings[k].inc;
-            for (let k in game.teachers) base += game.teachers[k].lvl * game.teachers[k].inc;
-            let studentMult = 1 + (game.students * 0.05);
-            return Math.floor(base * studentMult * game.multiplier);
+            for (let k in game.staff) base += game.staff[k].lvl * game.staff[k].inc;
+            for (let k in game.food) base += game.food[k].lvl * game.food[k].inc;
+            return Math.floor(base * (1 + (game.students * 0.05)) * game.multiplier);
         }
 
         function getPending() {
@@ -251,12 +228,7 @@
 
         function collectIncome() {
             let p = getPending();
-            if(p > 0) { 
-                game.money += p; 
-                game.lastCollection = Date.now(); 
-                showToast("Собрано: " + formatMoney(p)); 
-                saveGame(); // Сохраняем при сборе
-            }
+            if(p > 0) { game.money += p; game.lastCollection = Date.now(); showToast("Собрано: " + formatMoney(p)); saveGame(); }
         }
 
         function switchTab(tab) {
@@ -266,26 +238,21 @@
             let area = document.getElementById('content-area');
             area.innerHTML = '';
 
-            if (tab === 'build') {
-                for (let k in game.buildings) {
-                    let b = game.buildings[k];
-                    let cost = Math.floor(b.cost * Math.pow(1.2, b.lvl));
+            if (tab === 'build' || tab === 'staff' || tab === 'food') {
+                let type = tab === 'build' ? 'buildings' : (tab === 'staff' ? 'staff' : 'food');
+                for (let k in game[type]) {
+                    let item = game[type][k];
+                    if (type === 'staff' && !item.unlocked) continue;
+                    let cost = Math.floor(item.cost * Math.pow(type==='buildings'?1.2:1.3, item.lvl));
+                    let imgHtml = item.img ? `<img src="${item.img}" style="width:30px; height:30px; border-radius:50%; margin-right:8px;">` : '';
+                    
                     area.innerHTML += `<div class="item" id="item-${k}">
-                        <div class="item-info"><span class="item-name">${b.name} (Ур.${b.lvl})</span>
-                        <span class="item-income">+${formatMoney(b.inc)}/час</span></div>
-                        <button class="buy-btn" id="btn-${k}" onclick="buy('buildings', '${k}', ${cost})">${formatMoney(cost)} ₽</button>
-                    </div>`;
-                }
-            } else if (tab === 'teach') {
-                for (let k in game.teachers) {
-                    let t = game.teachers[k];
-                    if (!t.unlocked) continue;
-                    let cost = Math.floor(t.cost * Math.pow(1.3, t.lvl));
-                    area.innerHTML += `<div class="item" id="item-${k}">
-                        <img src="${t.img}" style="width:30px; height:30px; border-radius:50%; margin-right:10px;">
-                        <div class="item-info"><span class="item-name">${t.name} (Ур.${t.lvl})</span>
-                        <span class="item-income">+${formatMoney(t.inc)}/час</span></div>
-                        <button class="buy-btn" id="btn-${k}" onclick="buy('teachers', '${k}', ${cost})">${formatMoney(cost)} ₽</button>
+                        <div style="display:flex; align-items:center; flex:1;">
+                            ${imgHtml}
+                            <div class="item-info"><span class="item-name">${item.name} (Ур.${item.lvl})</span>
+                            <span class="item-income">+${formatMoney(item.inc)}/час</span></div>
+                        </div>
+                        <button class="buy-btn" id="btn-${k}" onclick="buy('${type}', '${k}', ${cost})">${formatMoney(cost)} ₽</button>
                     </div>`;
                 }
             } else if (tab === 'exc') {
@@ -295,14 +262,16 @@
                     <img src="${IMAGES.toilet}" class="toilet-img">
                     <div class="mini-game-box">
                         <div class="mini-game-title">💨 Покурить</div>
-                        <div style="font-size:12px; color:#aaa; margin-bottom:10px;">Шанс 50%. Выигрыш: x2 доход 5 мин. Проигрыш: Зло забирает доход за час.</div>
+                        <div style="font-size:11px; color:#aaa; margin-bottom:8px;">Шанс 50%. Выигрыш: x2 доход 5 мин. Проигрыш: Зло забирает доход за час.</div>
                         <button class="mini-game-btn" onclick="playVape()">Курить</button>
                     </div>
                     <div class="mini-game-box" style="border-color:var(--danger)">
                         <div class="mini-game-title" style="color:var(--danger)">🎰 Case-Battle</div>
-                        <div style="display:flex; justify-content:space-between; margin-bottom:5px;">
-                            <span style="font-size:12px;">Ставка:</span>
-                            <input type="number" id="bet-input" value="1000" style="width:80px; background:#111; color:white; border:1px solid #555; border-radius:5px; padding:2px 5px;">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                            <input type="number" id="bet-input" value="1000" placeholder="Ставка" style="width:70px; background:#111; color:white; border:1px solid #555; border-radius:5px; padding:4px; font-size:11px;">
+                            <select id="bet-target" style="background:#111; color:white; border:1px solid #555; border-radius:5px; padding:4px; font-size:11px;">
+                                <option value="2">x2</option><option value="3">x3</option><option value="5">x5</option><option value="50">x50</option>
+                            </select>
                         </div>
                         <div class="roulette-container">
                             <div class="roulette-pointer"></div>
@@ -313,35 +282,35 @@
                 `;
                 initRoulette();
             } else if (tab === 'punish') {
-                let html = '<div style="text-align:center; margin-bottom:10px; color:#aaa;">Выберите учителя для наказания (клик = +100₽)</div>';
+                let html = '<div style="text-align:center; margin-bottom:8px; color:#aaa; font-size:11px;">Выберите учителя (клик = +100₽)</div>';
                 html += '<div class="beat-area" id="beat-zone"><img src="" class="teacher-img" id="punish-img" style="display:none;"><div class="stick" id="stick"></div></div>';
-                html += '<select id="teacher-select" style="width:100%; padding:10px; margin-top:10px; background:#2c2c2e; color:white; border:none; border-radius:8px;" onchange="selectPunishTeacher()">';
+                html += '<select id="teacher-select" style="width:100%; padding:8px; background:#2c2c2e; color:white; border:none; border-radius:8px; font-size:12px;" onchange="selectPunishTeacher()">';
                 html += '<option value="">-- Выберите --</option>';
-                for (let k in game.teachers) {
-                    if (game.teachers[k].lvl > 0) html += `<option value="${k}">${game.teachers[k].name}</option>`;
+                for (let k in game.staff) {
+                    if (game.staff[k].lvl > 0) html += `<option value="${k}">${game.staff[k].name}</option>`;
                 }
                 html += '</select>';
                 area.innerHTML = html;
                 document.getElementById('beat-zone').onclick = hitTeacher;
             } else if (tab === 'task') {
                 area.innerHTML = `
-                    <div class="item"><div class="item-info"><span class="item-name">📅 Ежедневные</span><span class="item-desc">Сделать 10 улучшений (0/10)</span></div></div>
-                    <div class="item"><div class="item-info"><span class="item-name">📅 Ежедневные</span><span class="item-desc">Провести в игре 15 минут (0/15)</span></div></div>
-                    <div class="item"><div class="item-info"><span class="item-name">🗓 Еженедельные</span><span class="item-desc">Заработать 50 млн (0/50M)</span></div></div>
+                    <div class="item"><div class="item-info"><span class="item-name">📅 10 улучшений</span><span class="item-desc">Награда: 1 млн ₽</span></div></div>
+                    <div class="item"><div class="item-info"><span class="item-name">📅 15 минут в игре</span><span class="item-desc">Награда: x2 на 10 мин</span></div></div>
+                    <div class="item"><div class="item-info"><span class="item-name">🗓 Заработать 50 млн</span><span class="item-desc">Награда: 5 млн ₽</span></div></div>
                 `;
             } else if (tab === 'achieve') {
                 for (let k in game.achievements) {
                     let a = game.achievements[k];
                     area.innerHTML += `<div class="achieve-item" style="opacity: ${a.done?1:0.5}">
-                        <div style="color:var(--gold); font-weight:bold;">${a.name}</div>
-                        <div style="font-size:12px;">${a.desc}</div>
+                        <div style="color:var(--gold); font-weight:bold; font-size:12px;">${a.name}</div>
+                        <div style="font-size:10px;">${a.desc}</div>
                     </div>`;
                 }
             } else if (tab === 'donate') {
                 area.innerHTML = `
-                    <div class="donate-item"><div style="font-weight:bold; color:var(--gold)">x2 Заработок на 1 день</div><button class="mini-game-btn" onclick="showToast('В разработке')">29 ⭐</button></div>
-                    <div class="donate-item"><div style="font-weight:bold; color:var(--gold)">Обновить задания</div><button class="mini-game-btn" onclick="showToast('В разработке')">59 ⭐</button></div>
-                    <div class="donate-item" style="border:2px solid var(--gold)"><div style="font-weight:bold; color:var(--gold)">PREMIUM (x1.5 + Корона)</div><button class="mini-game-btn" onclick="showToast('В разработке')">299 ⭐</button></div>
+                    <div class="donate-item"><div style="font-weight:bold; color:var(--gold); font-size:12px;">x2 Заработок на 1 день</div><button class="donate-btn" onclick="showToast('В разработке')">29 ⭐</button></div>
+                    <div class="donate-item"><div style="font-weight:bold; color:var(--gold); font-size:12px;">Обновить задания</div><button class="donate-btn" onclick="showToast('В разработке')">59 ⭐</button></div>
+                    <div class="donate-item" style="border:2px solid var(--gold)"><div style="font-weight:bold; color:var(--gold); font-size:12px;">PREMIUM (x1.5 + Корона)</div><button class="donate-btn" onclick="showToast('В разработке')">299 ⭐</button></div>
                 `;
             }
             updateButtons();
@@ -352,24 +321,23 @@
                 game.money -= cost;
                 game[type][key].lvl++;
                 showToast("Куплено!");
-                if (type === 'teachers') {
-                    let keys = Object.keys(game.teachers);
+                if (type === 'staff') {
+                    let keys = Object.keys(game.staff);
                     let idx = keys.indexOf(key);
-                    if (idx + 1 < keys.length) game.teachers[keys[idx+1]].unlocked = true;
+                    if (idx + 1 < keys.length) game.staff[keys[idx+1]].unlocked = true;
                 }
                 if (!game.achievements.firstUpgrade.done) {
                     game.achievements.firstUpgrade.done = true;
                     game.multiplier += 0.01;
                     showToast("🏆 Достижение: x1.01 к доходу!");
                 }
-                switchTab(game.currentTab); 
-                saveGame(); // СОХРАНЯЕМ ПОСЛЕ ПОКУПКИ
+                switchTab(game.currentTab); saveGame();
             }
         }
 
         function updateButtons() {
-            let type = game.currentTab === 'teach' ? 'teachers' : 'buildings';
-            if (game.currentTab === 'build' || game.currentTab === 'teach') {
+            let type = game.currentTab === 'staff' ? 'staff' : (game.currentTab === 'food' ? 'food' : 'buildings');
+            if (game.currentTab === 'build' || game.currentTab === 'staff' || game.currentTab === 'food') {
                 for (let k in game[type]) {
                     let item = game[type][k];
                     let btn = document.getElementById('btn-' + k);
@@ -389,10 +357,9 @@
                 let left = e.time - (Date.now() - e.last);
                 let isReady = left <= 0;
                 let timeStr = isReady ? "ГОТОВО" : new Date(left).toISOString().substr(11, 8);
-                
                 html += `<div class="excursion-box">
-                    <div style="font-weight:bold">${e.name}</div>
-                    <div style="font-size:12px; color:var(--muted)">Награда: ${formatMoney(e.reward)} ₽</div>
+                    <div style="font-weight:bold; font-size:12px;">${e.name}</div>
+                    <div style="font-size:10px; color:var(--muted)">Награда: ${formatMoney(e.reward)} ₽</div>
                     <div class="excursion-timer">${timeStr}</div>
                     <button class="excursion-btn" ${isReady?'':'disabled'} onclick="claimExc('${k}')">${isReady?'Забрать':'В пути...'}</button>
                 </div>`;
@@ -402,13 +369,9 @@
 
         function claimExc(key) {
             let e = game.excursions[key];
-            let left = e.time - (Date.now() - e.last);
-            if (left <= 0) {
-                game.money += e.reward;
-                e.last = Date.now();
-                showToast("Экскурсия завершена! +" + formatMoney(e.reward));
-                renderExcursions();
-                saveGame();
+            if (e.time - (Date.now() - e.last) <= 0) {
+                game.money += e.reward; e.last = Date.now();
+                showToast("+" + formatMoney(e.reward)); renderExcursions(); saveGame();
             }
         }
 
@@ -416,33 +379,24 @@
             let flash = document.getElementById('flash-effect');
             flash.style.background = "white"; flash.style.opacity = '1';
             setTimeout(() => flash.style.opacity = '0', 200);
-
             setTimeout(() => {
                 if (Math.random() < 0.5) {
                     game.vapeEndTime = Date.now() + 5*60*1000;
-                    showToast("🚀 Успех! x2 доход на 5 минут.");
+                    showToast("🚀 x2 доход на 5 минут.");
                 } else {
-                    let lose = calculateIncome(); 
-                    game.money -= lose;
+                    let lose = calculateIncome(); game.money -= lose;
                     if(game.money < 0) game.money = 0;
-                    showZloAnim();
-                    showToast("💀 Провал! Зло забрал " + formatMoney(lose) + " ₽");
+                    showZloAnim(); showToast("💀 Зло забрал " + formatMoney(lose) + " ₽");
                 }
                 saveGame();
             }, 200);
         }
-
-        function showZloAnim() {
-            let z = document.getElementById('zlo-anim');
-            z.classList.add('show');
-            setTimeout(() => z.classList.remove('show'), 1500);
-        }
+        function showZloAnim() { let z = document.getElementById('zlo-anim'); z.classList.add('show'); setTimeout(() => z.classList.remove('show'), 1200); }
 
         let rouletteCells = [];
         function initRoulette() {
             let strip = document.getElementById('roulette-strip');
-            strip.innerHTML = '';
-            rouletteCells = [];
+            strip.innerHTML = ''; rouletteCells = [];
             for(let i=0; i<60; i++) {
                 if(i<30) rouletteCells.push({m:2, c:'cell-x2'});
                 else if(i<50) rouletteCells.push({m:3, c:'cell-x3'});
@@ -450,34 +404,41 @@
                 else rouletteCells.push({m:50, c:'cell-x50'});
             }
             rouletteCells.sort(() => Math.random() - 0.5);
-            
-            rouletteCells.forEach(cell => {
-                strip.innerHTML += `<div class="roulette-cell ${cell.c}">x${cell.m}</div>`;
-            });
+            rouletteCells.forEach(cell => { strip.innerHTML += `<div class="roulette-cell ${cell.c}">x${cell.m}</div>`; });
             strip.style.transform = `translateX(0px)`;
         }
 
         function spinRoulette() {
             let bet = parseInt(document.getElementById('bet-input').value);
+            let target = parseInt(document.getElementById('bet-target').value);
             if (isNaN(bet) || bet < 1000 || bet > 10000000) { showToast("Ставка от 1к до 10кк!"); return; }
             if (game.money < bet) { showToast("Недостаточно денег!"); return; }
 
             game.money -= bet;
             let strip = document.getElementById('roulette-strip');
+            
+            // Логика выбора: если выпадает нужный сектор, вы выигрываете.
+            // Шанс выпадения зависит от сектора (x50 - 1/60, x5 - 9/60 и т.д.)
+            // Мы просто берем случайный индекс. Если его множитель совпадает с target, вы выиграли.
             let winIdx = Math.floor(Math.random() * 60);
-            let winMultiplier = rouletteCells[winIdx].m;
+            let actualMultiplier = rouletteCells[winIdx].m;
+            
+            // Докручиваем рулетку до нужного элемента
             let screenWidth = window.innerWidth;
-            let targetX = (winIdx * 40) - (screenWidth / 2) + 20 - (Math.random()*20 - 10); 
+            let targetX = (winIdx * 40) - (screenWidth / 2) + 20;
             let totalX = targetX - (3 * 2400);
 
             strip.style.transform = `translateX(${totalX}px)`;
 
             setTimeout(() => {
-                let winAmount = bet * winMultiplier;
-                game.money += winAmount;
-                showToast(`Выпало x${winMultiplier}! Выигрыш: ${formatMoney(winAmount)} ₽`);
-                updateUI();
-                saveGame();
+                if (actualMultiplier === target) {
+                    let winAmount = bet * target;
+                    game.money += winAmount;
+                    showToast(`🎉 ПОБЕДА! Выпало x${target}! +${formatMoney(winAmount)} ₽`);
+                } else {
+                    showToast(`💀 ПРОИГРЫШ! Выпало x${actualMultiplier}, а вы ставили на x${target}.`);
+                }
+                updateUI(); saveGame();
                 setTimeout(() => { strip.style.transition = 'none'; strip.style.transform = 'translateX(0px)'; setTimeout(()=>strip.style.transition = 'transform 3s cubic-bezier(0.1, 0.7, 0.1, 1)', 50); }, 2000);
             }, 3100);
         }
@@ -485,23 +446,18 @@
         function selectPunishTeacher() {
             let k = document.getElementById('teacher-select').value;
             if (!k) { document.getElementById('punish-img').style.display = 'none'; document.getElementById('stick').style.display = 'none'; return; }
-            document.getElementById('punish-img').src = game.teachers[k].img;
+            document.getElementById('punish-img').src = game.staff[k].img;
             document.getElementById('punish-img').style.display = 'block';
             document.getElementById('stick').style.display = 'block';
         }
 
-        function hitTeacher(e) {
+        function hitTeacher() {
             let stick = document.getElementById('stick');
             let img = document.getElementById('punish-img');
             if (img.style.display === 'none') return;
-
-            stick.classList.add('hit');
-            img.style.transform = "scale(0.9) rotate(5deg)";
+            stick.classList.add('hit'); img.style.transform = "scale(0.9) rotate(5deg)";
             setTimeout(() => { stick.classList.remove('hit'); img.style.transform = "none"; }, 100);
-
-            game.money += 100;
-            showToast("+100 ₽");
-            saveGame(); // Сохраняем после каждого клика
+            game.money += 100; showToast("+100 ₽"); saveGame();
         }
 
         function formatMoney(num) {
@@ -512,8 +468,7 @@
         }
 
         function showToast(msg) {
-            const t = document.getElementById('toast');
-            t.innerText = msg; t.classList.add('show');
+            const t = document.getElementById('toast'); t.innerText = msg; t.classList.add('show');
             setTimeout(() => t.classList.remove('show'), 2500);
         }
     </script>

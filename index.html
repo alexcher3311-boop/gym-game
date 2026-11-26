@@ -10,7 +10,6 @@
             --bg-color: #121214;
             --panel-bg: #1e1e24;
             --accent: #4CAF50;
-            --accent-pressed: #388e3c;
             --gold: #FFD700;
             --text-muted: #8e8e93;
             --vape-color: #9C27B0;
@@ -24,12 +23,7 @@
         .screen { display: none; flex-direction: column; height: 100%; padding: 15px; box-sizing: border-box; }
         .active { display: flex; }
         
-        /* Анимация вспышки */
-        #flash-effect {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: white; opacity: 0; pointer-events: none; z-index: 999;
-            transition: opacity 0.2s;
-        }
+        #flash-effect { position: fixed; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; pointer-events: none; z-index: 999; transition: opacity 0.2s; }
 
         #start-screen { justify-content: center; align-items: center; text-align: center; }
         .start-btn { background: linear-gradient(135deg, var(--accent), #2E7D32); color: white; border: none; padding: 20px 40px; font-size: 24px; border-radius: 15px; cursor: pointer; font-weight: bold; margin-top: 20px;}
@@ -39,7 +33,6 @@
         .stat-val { font-size: 15px; font-weight: bold; color: var(--gold); }
         .stat-label { font-size: 10px; color: var(--text-muted); text-transform: uppercase; }
         .income-text { color: var(--accent); font-size: 11px; font-weight: bold; }
-        .student-text { color: #03A9F4; font-size: 11px; font-weight: bold; }
 
         .school-view { background: var(--panel-bg); border-radius: 15px; padding: 8px; text-align: center; margin-bottom: 10px; border: 2px solid #333; overflow: hidden; }
         .school-img { width: 100%; height: 110px; object-fit: cover; border-radius: 10px; transition: filter 1s; filter: grayscale(100%) brightness(30%); }
@@ -67,7 +60,6 @@
         .buy-btn.can-buy { background: var(--accent); }
         .buy-btn:disabled { background: #333; color: #666; }
 
-        /* Стили для туалета и казино */
         .toilet-img { width: 100%; height: 160px; object-fit: cover; border-radius: 15px; margin-bottom: 10px; border: 2px solid #555; }
         .casino-box { background: var(--panel-bg); border: 1px solid #444; padding: 15px; border-radius: 15px; text-align: center; margin-bottom: 10px; }
         .casino-title { color: var(--gold); font-size: 16px; font-weight: bold; margin-bottom: 5px; }
@@ -98,7 +90,7 @@
             <div class="stat">
                 <div class="stat-val" id="students">5</div>
                 <div class="stat-label">Ученики</div>
-                <div class="student-text" id="multiplier-text">x1</div>
+                <div class="income-text" id="multiplier-text" style="color:#03A9F4;">x1</div>
             </div>
             <div class="stat">
                 <div class="stat-val" id="rating">0</div>
@@ -194,22 +186,13 @@
             saveGame();
         }
 
-        function startLoop() {
-            setInterval(() => { updateUI(); }, 1000);
-        }
+        function startLoop() { setInterval(() => { updateUI(); }, 1000); }
 
-        // Доход теперь считается так: окупаемость здания ~15-20 минут при активном сборе
         function getPendingIncome() {
             let now = Date.now();
             let secondsPassed = (now - game.lastCollection) / 1000;
-            
-            let currentMultiplier = 1;
-            if (Date.now() < game.vapeEndTime) {
-                currentMultiplier = 2;
-            }
-
+            let currentMultiplier = Date.now() < game.vapeEndTime ? 2 : 1;
             let incomePerHour = calculateIncome() * currentMultiplier;
-            // Начисляем в секунду, чтобы даже за 1 минуту вы получали ощутимую сумму
             let incomePerSecond = incomePerHour / 3600;
             return Math.floor(incomePerSecond * secondsPassed);
         }
@@ -219,7 +202,6 @@
             for (let key in game.buildings) total += game.buildings[key].level * game.buildings[key].income;
             for (let key in game.staff) total += game.staff[key].level * game.staff[key].income;
             for (let key in game.food) total += game.food[key].level * game.food[key].income;
-            
             let studentMultiplier = 1 + (game.students * 0.05);
             return Math.floor(total * studentMultiplier);
         }
@@ -280,12 +262,12 @@
                     <img src="${IMAGES.toilet}" class="toilet-img" alt="Туалет">
                     <div class="casino-box">
                         <div class="casino-title">💨 Покурить Вейп</div>
-                        <div class="casino-desc">Шанс 50%. Выигрыш: Х2 доход на 5 мин. Проигрыш: Зло забирает 10% денег.</div>
+                        <div class="casino-desc">Шанс 50%. Выигрыш: Х2 доход на 5 мин. Проигрыш: Зло забирает 10%.</div>
                         <button class="casino-btn" onclick="playVape()">Курить</button>
                     </div>
                     <div class="casino-box" style="border-color: var(--danger);">
                         <div class="casino-title" style="color: var(--danger);">🎰 Казино</div>
-                        <div class="casino-desc">Шанс 50%. Выигрыш: Х2 деньги. Проигрыш: Зло забирает 10% денег.</div>
+                        <div class="casino-desc">Шанс 50%. Выигрыш: Х2 деньги. Проигрыш: Зло забирает 10%.</div>
                         <button class="casino-btn danger" onclick="playCasino()">Играть</button>
                     </div>
                 `;
@@ -312,7 +294,7 @@
                             <span class="item-name">${item.name} <span style="color:var(--gold);font-size:10px;">(Ур. ${item.level}/${item.maxLevel})</span></span>
                             <span class="item-desc">+${item.rating} к рейтингу</span>
                             ${item.income > 0 ? `<span class="item-income">+${formatMoney(item.income * item.level)} ₽/час</span>` : ''}
-                            ${item.students ? `<span class="student-text">+${item.students} учеников</span>` : ''}
+                            ${item.students ? `<span class="item-income" style="color:#03A9F4;">+${item.students} учеников</span>` : ''}
                         </div>
                     </div>
                     <button class="buy-btn ${isAffordable ? 'can-buy' : ''}" onclick="buyItem('${game.currentTab}', '${key}')" ${isMax ? 'disabled' : ''}>
@@ -334,11 +316,7 @@
                 game.lastCollection = Date.now();
                 game.money -= cost;
                 item.level++;
-                
-                if (item.students) {
-                    game.students += item.students;
-                }
-                
+                if (item.students) game.students += item.students;
                 showToast(item.name + " улучшено!");
                 updateUI();
                 renderShop(); 

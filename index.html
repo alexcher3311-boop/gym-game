@@ -14,6 +14,7 @@
             --gold: #FFD700;
             --text-muted: #8e8e93;
             --vape-color: #9C27B0;
+            --danger: #F44336;
         }
         body {
             background-color: var(--bg-color); color: white; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -23,83 +24,67 @@
         .screen { display: none; flex-direction: column; height: 100%; padding: 15px; box-sizing: border-box; }
         .active { display: flex; }
         
-        #start-screen { justify-content: center; align-items: center; text-align: center; background: url('https://www.transparenttextures.com/patterns/cubes.png'); background-color: #121214;}
-        .start-btn {
-            background: linear-gradient(135deg, var(--accent), #2E7D32); color: white; border: none;
-            padding: 20px 40px; font-size: 24px; border-radius: 15px; cursor: pointer;
-            box-shadow: 0 5px 15px rgba(76, 175, 80, 0.4); transition: transform 0.1s; margin-top: 20px; font-weight: bold;
+        /* Анимация вспышки */
+        #flash-effect {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: white; opacity: 0; pointer-events: none; z-index: 999;
+            transition: opacity 0.2s;
         }
-        .start-btn:active { transform: scale(0.95); }
 
-        .top-bar { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; background: var(--panel-bg); padding: 15px; border-radius: 15px; margin-bottom: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
+        #start-screen { justify-content: center; align-items: center; text-align: center; }
+        .start-btn { background: linear-gradient(135deg, var(--accent), #2E7D32); color: white; border: none; padding: 20px 40px; font-size: 24px; border-radius: 15px; cursor: pointer; font-weight: bold; margin-top: 20px;}
+
+        .top-bar { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; background: var(--panel-bg); padding: 15px; border-radius: 15px; margin-bottom: 10px; }
         .stat { text-align: center; }
-        .stat-val { font-size: 16px; font-weight: bold; color: var(--gold); white-space: nowrap;}
-        .stat-label { font-size: 11px; color: var(--text-muted); text-transform: uppercase; margin-top: 4px; }
-        .income-text { color: var(--accent); font-size: 12px; font-weight: bold; }
+        .stat-val { font-size: 15px; font-weight: bold; color: var(--gold); }
+        .stat-label { font-size: 10px; color: var(--text-muted); text-transform: uppercase; }
+        .income-text { color: var(--accent); font-size: 11px; font-weight: bold; }
+        .student-text { color: #03A9F4; font-size: 11px; font-weight: bold; }
 
-        .school-view {
-            background: var(--panel-bg); border-radius: 15px; padding: 10px; text-align: center; margin-bottom: 15px;
-            border: 2px solid #333; box-shadow: inset 0 0 20px rgba(0,0,0,0.5); overflow: hidden;
-        }
-        .school-img {
-            width: 100%; height: 150px; object-fit: cover; border-radius: 10px; 
-            transition: filter 1.5s ease-in-out;
-            filter: grayscale(100%) brightness(30%) contrast(130%);
-        }
-        .status-badge { display: inline-block; background: #333; padding: 5px 15px; border-radius: 20px; font-size: 14px; margin-top: 10px; color: var(--gold); border: 1px solid var(--gold);}
+        .school-view { background: var(--panel-bg); border-radius: 15px; padding: 8px; text-align: center; margin-bottom: 10px; border: 2px solid #333; overflow: hidden; }
+        .school-img { width: 100%; height: 110px; object-fit: cover; border-radius: 10px; transition: filter 1s; filter: grayscale(100%) brightness(30%); }
+        .status-badge { display: inline-block; background: #333; padding: 4px 12px; border-radius: 20px; font-size: 12px; margin-top: 5px; color: var(--gold); border: 1px solid var(--gold);}
 
-        .collect-btn {
-            width: 100%; background: linear-gradient(90deg, #FF9800, #FF5722); color: white; border: none;
-            padding: 15px; font-size: 18px; border-radius: 12px; font-weight: bold; margin-bottom: 15px;
-            box-shadow: 0 4px #b23c17; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 10px;
-        }
-        .collect-btn:active { transform: translateY(4px); box-shadow: 0 0 #b23c17; }
+        .collect-btn { width: 100%; background: linear-gradient(90deg, #FF9800, #FF5722); color: white; border: none; padding: 12px; font-size: 16px; border-radius: 12px; font-weight: bold; margin-bottom: 10px; cursor: pointer; }
+        .collect-btn:active { transform: scale(0.98); }
 
-        .tabs { display: flex; gap: 5px; margin-bottom: 10px; }
-        .tab-btn { flex: 1; background: #2c2c2e; color: var(--text-muted); border: none; padding: 10px 5px; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 13px; }
+        .tabs { display: flex; gap: 5px; margin-bottom: 10px; overflow-x: auto; padding-bottom: 5px;}
+        .tab-btn { flex: 1; background: #2c2c2e; color: var(--text-muted); border: none; padding: 10px 5px; border-radius: 10px; font-weight: bold; font-size: 11px; white-space: nowrap; }
         .tab-btn.active-tab { background: var(--panel-bg); color: white; border-bottom: 2px solid var(--accent); }
 
-        .shop-title { font-size: 12px; margin-bottom: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; display: flex; justify-content: space-between; }
-        .shop-list { overflow-y: auto; flex-grow: 1; padding-bottom: 20px; display: flex; flex-direction: column; gap: 10px;}
+        .shop-title { font-size: 11px; margin-bottom: 10px; color: var(--text-muted); display: flex; justify-content: space-between; }
+        .shop-list { overflow-y: auto; flex-grow: 1; padding-bottom: 20px; display: flex; flex-direction: column; gap: 8px;}
         
-        .shop-item {
-            background: var(--panel-bg); padding: 12px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center;
-            border-left: 4px solid #555; transition: border-color 0.3s;
-        }
+        .shop-item { background: var(--panel-bg); padding: 10px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; border-left: 4px solid #555; }
         .shop-item.affordable { border-left-color: var(--accent); }
-        
         .item-info { display: flex; flex-direction: row; align-items: center; flex: 1; }
-        .item-avatar { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; margin-right: 10px; border: 2px solid #555; }
+        .item-avatar { width: 35px; height: 35px; border-radius: 50%; object-fit: cover; margin-right: 10px; }
+        .item-name { font-weight: bold; font-size: 13px; }
+        .item-desc { font-size: 10px; color: var(--text-muted); }
+        .item-income { font-size: 10px; color: var(--accent); font-weight: bold;}
+
+        .buy-btn { background: #333; color: white; border: none; padding: 8px 10px; border-radius: 8px; font-weight: bold; font-size: 11px; min-width: 80px; }
+        .buy-btn.can-buy { background: var(--accent); }
+        .buy-btn:disabled { background: #333; color: #666; }
+
+        /* Стили для туалета и казино */
+        .toilet-img { width: 100%; height: 160px; object-fit: cover; border-radius: 15px; margin-bottom: 10px; border: 2px solid #555; }
+        .casino-box { background: var(--panel-bg); border: 1px solid #444; padding: 15px; border-radius: 15px; text-align: center; margin-bottom: 10px; }
+        .casino-title { color: var(--gold); font-size: 16px; font-weight: bold; margin-bottom: 5px; }
+        .casino-desc { font-size: 11px; color: #aaa; margin-bottom: 10px; }
+        .casino-btn { background: var(--vape-color); color: white; border: none; padding: 10px; border-radius: 10px; font-weight: bold; font-size: 14px; width: 100%; margin-bottom: 5px; }
+        .casino-btn.danger { background: var(--danger); }
         
-        .item-name { font-weight: bold; font-size: 14px; display: flex; align-items: center; gap: 5px; flex-wrap: wrap;}
-        .item-desc { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
-        .item-income { font-size: 11px; color: var(--accent); margin-top: 2px; font-weight: bold;}
-
-        .buy-btn {
-            background: #333; color: white; border: none; padding: 10px;
-            border-radius: 8px; font-weight: bold; cursor: pointer; min-width: 90px; text-align: center;
-            transition: 0.2s; font-size: 12px;
-        }
-        .buy-btn.can-buy { background: var(--accent); box-shadow: 0 3px 0 var(--accent-pressed); }
-        .buy-btn.can-buy:active { transform: translateY(3px); box-shadow: none; }
-        .buy-btn:disabled { background: #333; color: #666; cursor: not-allowed; }
-
-        #toast {
-            position: fixed; bottom: -50px; left: 50%; transform: translateX(-50%);
-            background: #333; color: white; padding: 10px 20px; border-radius: 20px; transition: bottom 0.3s;
-            font-weight: bold; z-index: 100; font-size: 14px; box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-            border: 1px solid var(--accent); white-space: nowrap;
-        }
+        #toast { position: fixed; bottom: -50px; left: 50%; transform: translateX(-50%); background: #333; color: white; padding: 10px 20px; border-radius: 20px; transition: bottom 0.3s; font-weight: bold; z-index: 100; font-size: 13px; box-shadow: 0 4px 10px rgba(0,0,0,0.5); border: 1px solid var(--accent); white-space: nowrap; text-align:center;}
         #toast.show { bottom: 30px; }
     </style>
 </head>
 <body>
+    <div id="flash-effect"></div>
 
     <div id="start-screen" class="screen active">
         <h1>Гимназия<br>Краснообская</h1>
-        <p style="color: var(--text-muted); margin-bottom: 30px; font-size: 14px; max-width: 300px;">
-            Вам выделено <b>5 000 000 ₽</b> на восстановление школы.<br>Стоимость сделки: 1 ₽
-        </p>
+        <p style="color: var(--text-muted); font-size: 14px;">Вам выделено <b>5 000 000 ₽</b>.<br>У вас 5 учеников.</p>
         <button class="start-btn" onclick="buySchool()">Вступить в должность</button>
     </div>
 
@@ -111,8 +96,9 @@
                 <div class="income-text" id="income">+0 ₽/час</div>
             </div>
             <div class="stat">
-                <div class="stat-val" id="date">День 1</div>
-                <div class="stat-label" id="days-left">Осталось: 90 дней</div>
+                <div class="stat-val" id="students">5</div>
+                <div class="stat-label">Ученики</div>
+                <div class="student-text" id="multiplier-text">x1</div>
             </div>
             <div class="stat">
                 <div class="stat-val" id="rating">0</div>
@@ -126,13 +112,14 @@
         </div>
 
         <button class="collect-btn" onclick="collectIncome()">
-            💰 Собрать доход: <span id="pending-income">0 ₽</span>
+            💰 Собрать: <span id="pending-income">0 ₽</span>
         </button>
 
         <div class="tabs">
-            <button class="tab-btn active-tab" id="tab-build" onclick="switchTab('build')">🏫 Здания</button>
+            <button class="tab-btn active-tab" id="tab-build" onclick="switchTab('build')">🏫 Школа</button>
             <button class="tab-btn" id="tab-staff" onclick="switchTab('staff')">👨‍🏫 Люди</button>
-            <button class="tab-btn" id="tab-food" onclick="switchTab('food')">🍕 Столовая</button>
+            <button class="tab-btn" id="tab-food" onclick="switchTab('food')">🍕 Еда</button>
+            <button class="tab-btn" id="tab-toilet" onclick="switchTab('toilet')">🚽 Туалет</button>
         </div>
 
         <div class="shop-title">
@@ -159,96 +146,70 @@
             andryukha: "https://i.ibb.co/NgtgF7NG/image.jpg",     
             informatik: "https://i.ibb.co/gZkD14Pn/image.jpg",    
             fizik: "https://i.ibb.co/PzTw3Cm2/image.jpg",         
-            zlo: "https://i.ibb.co/Rk1HbtNk/image.jpg"            
+            zlo: "https://i.ibb.co/Rk1HbtNk/image.jpg",
+            toilet: "https://i.ibb.co/KjQmJcYs/image.jpg"
         };
 
         let game = {
             money: 0,
             rating: 0,
-            day: 1,
+            students: 5,
             lastTick: Date.now(),
             lastCollection: Date.now(),
-            isBought: false,
             currentTab: 'build',
-            lastVapeTime: 0,
+            vapeEndTime: 0,
             
             buildings: {
-                wardrobe: { level: 0, baseCost: 10000, income: 2000, rating: 10, maxLevel: 10, emoji: '🧥', name: 'Гардероб' },
-                toilet: { level: 0, baseCost: 25000, income: 5000, rating: 20, maxLevel: 10, emoji: '🚽', name: 'Туалет' },
-                canteen: { level: 0, baseCost: 50000, income: 10000, rating: 50, maxLevel: 10, emoji: '🍲', name: 'Столовая (здание)' },
-                bus: { level: 0, baseCost: 150000, income: 30000, rating: 100, maxLevel: 10, emoji: '🚌', name: 'Школьный автобус' },
-                classes: { level: 0, baseCost: 500000, income: 100000, rating: 200, maxLevel: 10, emoji: '📚', name: 'Ремонт классов' },
-                gym: { level: 0, baseCost: 1500000, income: 300000, rating: 500, maxLevel: 10, emoji: '🏀', name: 'Спортзал' }
+                yard: { level: 0, baseCost: 10000, income: 1000, rating: 100, maxLevel: 20, emoji: '🌳', name: 'Двор' },
+                wardrobe: { level: 0, baseCost: 25000, income: 2500, rating: 50, maxLevel: 20, emoji: '🧥', name: 'Раздевалка' },
+                classes: { level: 0, baseCost: 50000, income: 5000, rating: 200, maxLevel: 20, emoji: '📚', name: 'Классы' },
+                heating: { level: 0, baseCost: 150000, income: 0, rating: 300, maxLevel: 10, emoji: '🔥', name: 'Отопление', students: 5 },
+                bus: { level: 0, baseCost: 300000, income: 20000, rating: 500, maxLevel: 10, emoji: '🚌', name: 'Автобус', students: 2 }
             },
             staff: {
-                pokost: { level: 0, baseCost: 20000, income: 2000, rating: 20, maxLevel: 10, img: IMAGES.pokost, name: 'Покость' },
-                rybak: { level: 0, baseCost: 50000, income: 3000, rating: 50, maxLevel: 10, img: IMAGES.rybak, name: 'Рыбак' },
-                davydovna: { level: 0, baseCost: 150000, income: 3000, rating: 100, maxLevel: 10, img: IMAGES.davydovna, name: 'Давыдовна' },
-                lucky_rybak: { level: 0, baseCost: 300000, income: 5000, rating: 150, maxLevel: 10, img: IMAGES.lucky_rybak, name: 'Счастливый рыбак' },
-                andryukha: { level: 0, baseCost: 600000, income: 3000, rating: 250, maxLevel: 10, img: IMAGES.andryukha, name: 'Андрюха' },
-                informatik: { level: 0, baseCost: 1200000, income: 4000, rating: 300, maxLevel: 10, img: IMAGES.informatik, name: 'Информатик' },
-                ryaboshapko: { level: 0, baseCost: 2000000, income: 6000, rating: 400, maxLevel: 10, img: IMAGES.ryaboshapko, name: 'Рябошапко' },
-                fizik: { level: 0, baseCost: 4000000, income: 2000, rating: 500, maxLevel: 10, img: IMAGES.fizik, name: 'Физик' },
-                zlo: { level: 0, baseCost: 15000000, income: 0, rating: 1000, maxLevel: 1, img: IMAGES.zlo, name: 'Зло' }
+                pokost: { level: 0, baseCost: 5000, income: 500, rating: 20, maxLevel: 10, img: IMAGES.pokost, name: 'Покость' },
+                rybak: { level: 0, baseCost: 15000, income: 1500, rating: 50, maxLevel: 10, img: IMAGES.rybak, name: 'Рыбак' },
+                davydovna: { level: 0, baseCost: 40000, income: 4000, rating: 100, maxLevel: 10, img: IMAGES.davydovna, name: 'Давыдовна' },
+                lucky_rybak: { level: 0, baseCost: 100000, income: 10000, rating: 150, maxLevel: 10, img: IMAGES.lucky_rybak, name: 'Счастливый рыбак' },
+                andryukha: { level: 0, baseCost: 250000, income: 25000, rating: 250, maxLevel: 10, img: IMAGES.andryukha, name: 'Андрюха' },
+                informatik: { level: 0, baseCost: 500000, income: 50000, rating: 300, maxLevel: 10, img: IMAGES.informatik, name: 'Информатик' },
+                ryaboshapko: { level: 0, baseCost: 1000000, income: 100000, rating: 400, maxLevel: 10, img: IMAGES.ryaboshapko, name: 'Рябошапко' },
+                fizik: { level: 0, baseCost: 2000000, income: 200000, rating: 500, maxLevel: 10, img: IMAGES.fizik, name: 'Физик' },
+                zlo: { level: 0, baseCost: 5000000, income: 0, rating: 1000, maxLevel: 1, img: IMAGES.zlo, name: 'Зло' }
             },
             food: {
-                hotdog: { level: 0, baseCost: 100000, income: 10000, rating: 100, maxLevel: 5, emoji: '🌭', name: 'Сосиска в тесте' },
-                juice: { level: 0, baseCost: 300000, income: 30000, rating: 300, maxLevel: 5, emoji: '🧃', name: 'Сок' },
-                icecream: { level: 0, baseCost: 800000, income: 80000, rating: 500, maxLevel: 5, emoji: '🍦', name: 'Мороженое' },
-                pizza: { level: 0, baseCost: 2500000, income: 250000, rating: 1000, maxLevel: 5, emoji: '🍕', name: 'Пицца' }
+                hotdog: { level: 0, baseCost: 5000, income: 500, rating: 100, maxLevel: 5, emoji: '🌭', name: 'Сосиска' },
+                juice: { level: 0, baseCost: 15000, income: 1500, rating: 300, maxLevel: 5, emoji: '🧃', name: 'Сок' },
+                icecream: { level: 0, baseCost: 40000, income: 4000, rating: 500, maxLevel: 5, emoji: '🍦', name: 'Мороженое' },
+                pizza: { level: 0, baseCost: 100000, income: 10000, rating: 1000, maxLevel: 5, emoji: '🍕', name: 'Пицца' }
             }
         };
 
-        const statuses = [
-            { req: 0, name: 'Сельская школа' },
-            { req: 1000, name: 'Идёт ремонт' },
-            { req: 5000, name: 'Открытая школа' },
-            { req: 15000, name: 'Хорошая школа' },
-            { req: 40000, name: 'Лучшая в области' },
-            { req: 100000, name: 'Лучшая в стране' },
-            { req: 250000, name: 'Гимназия будущего' }
-        ];
-
-        function loadGame() {
-            let saved = localStorage.getItem('gymGameSave_v20');
-            if (saved) {
-                game = JSON.parse(saved);
-                game.lastCollection = Date.now(); 
-                document.getElementById('start-screen').classList.remove('active');
-                document.getElementById('game-screen').classList.add('active');
-                switchTab(game.currentTab || 'build');
-                updateUI();
-                startLoop();
-            }
-        }
-
-        function saveGame() {
-            localStorage.setItem('gymGameSave_v20', JSON.stringify(game));
-        }
-
         function buySchool() {
-            game.isBought = true;
             game.money = 5000000;
-            game.lastCollection = Date.now();
             document.getElementById('start-screen').classList.remove('active');
             document.getElementById('game-screen').classList.add('active');
             switchTab('build');
-            updateUI();
             startLoop();
-            showToast("Вы купили школу! Сделайте из неё конфетку.");
             saveGame();
         }
 
         function startLoop() {
-            setInterval(() => {
-                updateUI();
-            }, 1000);
+            setInterval(() => { updateUI(); }, 1000);
         }
 
+        // Доход теперь считается так: окупаемость здания ~15-20 минут при активном сборе
         function getPendingIncome() {
             let now = Date.now();
             let secondsPassed = (now - game.lastCollection) / 1000;
-            let incomePerHour = calculateIncome();
+            
+            let currentMultiplier = 1;
+            if (Date.now() < game.vapeEndTime) {
+                currentMultiplier = 2;
+            }
+
+            let incomePerHour = calculateIncome() * currentMultiplier;
+            // Начисляем в секунду, чтобы даже за 1 минуту вы получали ощутимую сумму
             let incomePerSecond = incomePerHour / 3600;
             return Math.floor(incomePerSecond * secondsPassed);
         }
@@ -258,7 +219,9 @@
             for (let key in game.buildings) total += game.buildings[key].level * game.buildings[key].income;
             for (let key in game.staff) total += game.staff[key].level * game.staff[key].income;
             for (let key in game.food) total += game.food[key].level * game.food[key].income;
-            return total;
+            
+            let studentMultiplier = 1 + (game.students * 0.05);
+            return Math.floor(total * studentMultiplier);
         }
 
         function calculateRating() {
@@ -270,8 +233,7 @@
         }
 
         function getCost(item) {
-            // Рост цены в 1.4 раза за уровень для 10 уровней и в 1.5 для 5 уровней
-            let multiplier = item.maxLevel === 10 ? 1.4 : 1.5;
+            let multiplier = item.maxLevel === 20 ? 1.2 : (item.maxLevel === 10 ? 1.3 : 1.4);
             return Math.floor(item.baseCost * Math.pow(multiplier, item.level));
         }
 
@@ -282,7 +244,8 @@
             
             if(tab === 'build') document.getElementById('shop-title-text').innerText = "Развитие инфраструктуры";
             else if(tab === 'staff') document.getElementById('shop-title-text').innerText = "Найм персонала";
-            else document.getElementById('shop-title-text').innerText = "Меню в столовой";
+            else if(tab === 'food') document.getElementById('shop-title-text').innerText = "Меню в столовой";
+            else if(tab === 'toilet') document.getElementById('shop-title-text').innerText = "Туалет";
             
             renderShop();
         }
@@ -293,58 +256,42 @@
             
             document.getElementById('money').innerText = formatMoney(game.money);
             document.getElementById('pending-income').innerText = "+" + formatMoney(pending);
-            document.getElementById('income').innerText = '+' + formatMoney(calculateIncome()) + '/час';
+            document.getElementById('students').innerText = game.students;
             
-            let daysLeft = 90 - (game.day - 1);
-            if(daysLeft < 0) daysLeft = 0;
-            document.getElementById('date').innerText = "День " + game.day;
-            document.getElementById('days-left').innerText = "Осталось: " + daysLeft + " дн.";
+            let currentMultiplier = Date.now() < game.vapeEndTime ? 2 : 1;
+            document.getElementById('income').innerText = '+' + formatMoney(calculateIncome() * currentMultiplier) + '/час';
+            document.getElementById('multiplier-text').innerText = "x" + currentMultiplier;
             document.getElementById('rating').innerText = game.rating;
 
-            let currentStatus = statuses[0];
-            let nextStatus = null;
-            for (let i = 0; i < statuses.length; i++) {
-                if (game.rating >= statuses[i].req) {
-                    currentStatus = statuses[i];
-                    nextStatus = statuses[i+1];
-                }
-            }
-            
             let imgEl = document.getElementById('school-img');
-            if (game.rating < 1000) imgEl.style.filter = "grayscale(100%) brightness(30%) contrast(130%)";
+            if (game.rating < 1000) imgEl.style.filter = "grayscale(100%) brightness(30%)";
             else if (game.rating < 5000) imgEl.style.filter = "grayscale(50%) brightness(80%)";
             else imgEl.style.filter = "none";
-
-            document.getElementById('school-status').innerText = currentStatus.name;
             
-            let reqEl = document.getElementById('next-status-req');
-            if (nextStatus) reqEl.innerText = "До след. статуса: " + (nextStatus.req - game.rating);
-            else reqEl.innerText = "МАКС";
-
-            if(game.currentTab === 'staff') {
-                let vapeBtn = document.getElementById('btn-zlo');
-                let vapeTimer = document.getElementById('timer-zlo');
-                if (vapeBtn && vapeTimer && game.staff.zlo.level > 0) {
-                    let timeSinceVape = Date.now() - game.lastVapeTime;
-                    let hourMs = 60 * 60 * 1000;
-                    if (timeSinceVape >= hourMs) {
-                        vapeBtn.innerText = "Забрать";
-                        vapeBtn.classList.add('can-buy');
-                        vapeTimer.innerText = "Вейп готов!";
-                    } else {
-                        let minutesLeft = Math.ceil((hourMs - timeSinceVape) / 60000);
-                        vapeBtn.innerText = "Ждать";
-                        vapeBtn.classList.remove('can-buy');
-                        vapeTimer.innerText = "До вейпа: " + minutesLeft + " мин.";
-                    }
-                }
-            }
             updateButtons();
         }
 
         function renderShop() {
             const list = document.getElementById('shop-list');
             list.innerHTML = '';
+            
+            if (game.currentTab === 'toilet') {
+                list.innerHTML = `
+                    <img src="${IMAGES.toilet}" class="toilet-img" alt="Туалет">
+                    <div class="casino-box">
+                        <div class="casino-title">💨 Покурить Вейп</div>
+                        <div class="casino-desc">Шанс 50%. Выигрыш: Х2 доход на 5 мин. Проигрыш: Зло забирает 10% денег.</div>
+                        <button class="casino-btn" onclick="playVape()">Курить</button>
+                    </div>
+                    <div class="casino-box" style="border-color: var(--danger);">
+                        <div class="casino-title" style="color: var(--danger);">🎰 Казино</div>
+                        <div class="casino-desc">Шанс 50%. Выигрыш: Х2 деньги. Проигрыш: Зло забирает 10% денег.</div>
+                        <button class="casino-btn danger" onclick="playCasino()">Играть</button>
+                    </div>
+                `;
+                return;
+            }
+
             let data = game[game.currentTab];
             
             for (let key in data) {
@@ -355,51 +302,20 @@
 
                 let div = document.createElement('div');
                 div.className = 'shop-item' + (isAffordable ? ' affordable' : '');
-                div.id = 'item-' + key;
                 
-                let iconHtml = item.img 
-                    ? `<img src="${item.img}" class="item-avatar">` 
-                    : `<span style="font-size: 24px; margin-right:10px;">${item.emoji}</span>`;
-
-                if (key === 'zlo') {
-                    if (isMax) {
-                        div.innerHTML = `
-                            <div class="item-info">
-                                ${iconHtml}
-                                <div style="display:flex; flex-direction:column;">
-                                    <span class="item-name">${item.name}</span>
-                                    <span class="vape-timer" id="timer-zlo">Вейп готов!</span>
-                                </div>
-                            </div>
-                            <button class="buy-btn vape-btn" id="btn-zlo" onclick="getVape()">Забрать</button>
-                        `;
-                    } else {
-                        div.innerHTML = `
-                            <div class="item-info">
-                                ${iconHtml}
-                                <div style="display:flex; flex-direction:column;">
-                                    <span class="item-name">${item.name}</span>
-                                    <span class="item-desc">+${item.rating} к рейтингу</span>
-                                    <span class="item-desc" style="color:var(--vape-color)">Вейп (100к) раз в час</span>
-                                </div>
-                            </div>
-                            <button class="buy-btn" id="btn-zlo" onclick="buyItem('zlo')">${formatMoney(cost)} ₽</button>
-                        `;
-                    }
-                    list.appendChild(div);
-                    continue;
-                }
+                let iconHtml = item.img ? `<img src="${item.img}" class="item-avatar">` : `<span style="font-size: 24px; margin-right:10px;">${item.emoji}</span>`;
 
                 div.innerHTML = `
                     <div class="item-info">
                         ${iconHtml}
                         <div style="display:flex; flex-direction:column;">
-                            <span class="item-name">${item.name} <span style="color:var(--gold);font-size:12px;">(Ур. ${item.level}/${item.maxLevel})</span></span>
+                            <span class="item-name">${item.name} <span style="color:var(--gold);font-size:10px;">(Ур. ${item.level}/${item.maxLevel})</span></span>
                             <span class="item-desc">+${item.rating} к рейтингу</span>
                             ${item.income > 0 ? `<span class="item-income">+${formatMoney(item.income * item.level)} ₽/час</span>` : ''}
+                            ${item.students ? `<span class="student-text">+${item.students} учеников</span>` : ''}
                         </div>
                     </div>
-                    <button class="buy-btn ${isAffordable ? 'can-buy' : ''}" id="btn-${key}" onclick="buyItem('${key}')" ${isMax ? 'disabled' : ''}>
+                    <button class="buy-btn ${isAffordable ? 'can-buy' : ''}" onclick="buyItem('${game.currentTab}', '${key}')" ${isMax ? 'disabled' : ''}>
                         ${isMax ? 'МАКС' : formatMoney(cost) + ' ₽'}
                     </button>
                 `;
@@ -408,55 +324,70 @@
             updateButtons();
         }
 
-        function updateButtons() {
-            let data = game[game.currentTab];
-            let currentMoney = game.money + getPendingIncome();
-            
-            for (let key in data) {
-                let item = data[key];
-                if (key === 'zlo') continue; 
-
-                let btn = document.getElementById('btn-' + key);
-                let div = document.getElementById('item-' + key);
-                if (!btn || item.level >= item.maxLevel) continue;
-
-                let cost = getCost(item);
-                if (currentMoney >= cost) {
-                    btn.classList.add('can-buy');
-                    btn.disabled = false;
-                    if(div) div.classList.add('affordable');
-                } else {
-                    btn.classList.remove('can-buy');
-                    btn.disabled = true;
-                    if(div) div.classList.remove('affordable');
-                }
-            }
-        }
-
-        function buyItem(key) {
-            let data = game[game.currentTab];
-            let item = data[key];
+        function buyItem(category, key) {
+            let item = game[category][key];
             let cost = getCost(item);
             let currentMoney = game.money + getPendingIncome();
             
             if (currentMoney >= cost && item.level < item.maxLevel) {
                 game.money += getPendingIncome();
                 game.lastCollection = Date.now();
-
                 game.money -= cost;
                 item.level++;
                 
-                if (key === 'zlo') {
-                    game.lastVapeTime = Date.now();
-                    showToast("Зло нанято! Теперь он приносит вейпы.");
-                } else {
-                    showToast(item.name + " улучшено до Ур. " + item.level);
+                if (item.students) {
+                    game.students += item.students;
                 }
                 
+                showToast(item.name + " улучшено!");
                 updateUI();
                 renderShop(); 
                 saveGame();
             }
+        }
+
+        function playVape() {
+            let flash = document.getElementById('flash-effect');
+            flash.style.background = "white";
+            flash.style.opacity = '1';
+            setTimeout(() => { flash.style.opacity = '0'; }, 200);
+
+            setTimeout(() => {
+                if (Math.random() < 0.5) {
+                    game.vapeEndTime = Date.now() + (5 * 60 * 1000);
+                    showToast("🚀 УСПЕХ! Доход х2 на 5 минут!");
+                } else {
+                    let lose = Math.floor(game.money * 0.1);
+                    game.money -= lose;
+                    if(game.money < 0) game.money = 0;
+                    showToast("💀 ПРОИГРЫШ! Зло забрал " + formatMoney(lose) + " ₽");
+                }
+                updateUI();
+                saveGame();
+            }, 200);
+        }
+
+        function playCasino() {
+            let flash = document.getElementById('flash-effect');
+            flash.style.background = "red";
+            flash.style.opacity = '1';
+            setTimeout(() => { flash.style.opacity = '0'; }, 200);
+
+            setTimeout(() => {
+                if (Math.random() < 0.5) {
+                    let currentBalance = game.money + getPendingIncome();
+                    game.money = currentBalance * 2;
+                    game.lastCollection = Date.now();
+                    showToast("🎉 ДЖЕКПОТ! Баланс удвоен!");
+                } else {
+                    let lose = Math.floor(game.money * 0.1);
+                    game.money -= lose;
+                    if(game.money < 0) game.money = 0;
+                    showToast("💀 ПРОИГРЫШ! Зло забрал " + formatMoney(lose) + " ₽");
+                }
+                updateUI();
+                saveGame();
+            }, 200);
         }
 
         function collectIncome() {
@@ -464,26 +395,9 @@
             if (pending > 0) {
                 game.money += pending;
                 game.lastCollection = Date.now();
-                showToast("Вы собрали: " + formatMoney(pending) + " ₽");
+                showToast("Собрано: " + formatMoney(pending) + " ₽");
                 updateUI();
                 saveGame();
-            } else {
-                showToast("Пока нечего собирать.");
-            }
-        }
-
-        function getVape() {
-            let timeSinceVape = Date.now() - game.lastVapeTime;
-            let hourMs = 60 * 60 * 1000;
-            
-            if (timeSinceVape >= hourMs) {
-                game.money += 100000;
-                game.lastVapeTime = Date.now();
-                showToast("Вы забрали Вейп за 100 000 ₽!");
-                updateUI();
-                saveGame();
-            } else {
-                showToast("Вейп еще не готов!");
             }
         }
 
@@ -498,9 +412,21 @@
             const toast = document.getElementById('toast');
             toast.innerText = msg;
             toast.classList.add('show');
-            setTimeout(() => toast.classList.remove('show'), 2000);
+            setTimeout(() => toast.classList.remove('show'), 3000);
         }
 
+        function saveGame() { localStorage.setItem('gymGameSave_v22', JSON.stringify(game)); }
+        function loadGame() {
+            let saved = localStorage.getItem('gymGameSave_v22');
+            if (saved) {
+                game = JSON.parse(saved);
+                game.lastCollection = Date.now(); 
+                document.getElementById('start-screen').classList.remove('active');
+                document.getElementById('game-screen').classList.add('active');
+                switchTab(game.currentTab || 'build');
+                startLoop();
+            }
+        }
         window.onload = () => { loadGame(); };
     </script>
 </body>
